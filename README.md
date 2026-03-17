@@ -1,15 +1,9 @@
-# Holographic Resume · CSS 3D Version
+# Spatial Hologram Resume
 
-This version is dependency-free and is designed to avoid the problem where the center scene fails to render because of external 3D libraries or WebGL issues.
+This version fixes two concrete issues from the previous iteration:
 
-## What this fixes
-
-- visible central projector device
-- visible hologram beam
-- floating resume cards around the device
-- mouse drag to inspect from different angles
-- mouse wheel zoom
-- click a card or press 1-6 to focus a module
+1. The layout is now stage-first instead of using large side columns.
+2. The floating resume cards face outward, so the user sees the card fronts instead of the backs.
 
 ## Files
 
@@ -17,20 +11,10 @@ This version is dependency-free and is designed to avoid the problem where the c
 - `styles.css`
 - `app.js`
 
-## Publish to GitHub Pages
+## Publish
 
-Replace the old files in your repo root with these three files, commit to `main`, then wait a minute or two for GitHub Pages to update.
+Push the files to your GitHub repo root and wait for GitHub Pages to redeploy.
 
-## Content to change
+## Customize
 
-Edit `resumeData` in `app.js`:
-
-- `profile.name`
-- `profile.title`
-- `profile.summary`
-- `profile.metrics`
-- each item in `sections`
-
-## Note
-
-This is still a browser simulation, not physical hologram hardware. But it does render a projector + floating modules scene that can be inspected from multiple angles without relying on external 3D packages.
+Edit the `resumeData` object in `app.js`.

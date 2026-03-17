@@ -3,112 +3,98 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Holographic Resume · CSS 3D</title>
+    <title>Spatial Hologram Resume</title>
     <meta
       name="description"
-      content="Interactive holographic resume with a central projector device and 3D review controls."
+      content="A stage-first hologram resume with a central projector device, outward-facing cards, and interactive camera controls."
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="bg-noise"></div>
-    <div class="scanlines"></div>
+    <div class="background-layers" aria-hidden="true">
+      <div class="nebula nebula-a"></div>
+      <div class="nebula nebula-b"></div>
+      <div class="scanlines"></div>
+      <div class="noise"></div>
+    </div>
 
-    <main class="app-shell">
-      <header class="panel topbar">
-        <div>
-          <div class="eyebrow">Holographic Resume</div>
-          <h1 id="heroName">Your Name</h1>
-          <p id="heroTitle">Software Engineer</p>
+    <main class="viewport-shell">
+      <section id="stage" class="stage" aria-label="Interactive hologram stage">
+        <div class="stage-vignette"></div>
+        <div id="world" class="world">
+          <div class="floor floor-outer"></div>
+          <div class="floor floor-inner"></div>
+          <div class="stage-grid"></div>
+          <div class="halo halo-a"></div>
+          <div class="halo halo-b"></div>
+
+          <div class="device-group">
+            <div class="base-tier tier-1"></div>
+            <div class="base-tier tier-2"></div>
+            <div class="base-tier tier-3"></div>
+            <div class="projector-body"></div>
+            <div class="projector-top"></div>
+            <div class="projector-slot"></div>
+            <div class="projector-emitter"></div>
+            <div class="beam beam-core"></div>
+            <div class="beam beam-shell"></div>
+            <div class="beam-cap"></div>
+            <div class="pulse-ring pulse-ring-a"></div>
+            <div class="pulse-ring pulse-ring-b"></div>
+            <div class="pulse-ring pulse-ring-c"></div>
+          </div>
+
+          <div id="moduleOrbit" class="module-orbit"></div>
+          <div id="beamParticles" class="beam-particles"></div>
         </div>
-
-        <div class="topbar-actions">
-          <button id="orbitButton" class="ghost-button" type="button">Pause Orbit</button>
-          <button id="centerButton" class="primary-button" type="button">Center Device</button>
-        </div>
-      </header>
-
-      <section class="workspace">
-        <aside class="panel side-panel left-panel">
-          <div class="panel-label-row">
-            <span class="eyebrow">Profile</span>
-            <span class="live-dot"></span>
-          </div>
-
-          <p id="profileSummary" class="summary-copy"></p>
-
-          <div id="metricGrid" class="metric-grid"></div>
-
-          <div class="control-grid">
-            <div><span>Drag</span><strong>Rotate Scene</strong></div>
-            <div><span>Scroll</span><strong>Zoom</strong></div>
-            <div><span>Click Card</span><strong>Inspect</strong></div>
-            <div><span>1-6</span><strong>Jump</strong></div>
-          </div>
-        </aside>
-
-        <section class="stage-panel panel">
-          <div class="stage-header">
-            <div>
-              <span class="eyebrow">3D Stage</span>
-              <strong>Projector + orbiting resume modules</strong>
-            </div>
-            <div class="stage-hint">Drag the scene to inspect the hologram from different angles</div>
-          </div>
-
-          <div id="stage" class="stage">
-            <div id="world" class="world">
-              <div class="floor floor-outer"></div>
-              <div class="floor floor-inner"></div>
-              <div class="grid-disc"></div>
-
-              <div class="device-group">
-                <div class="platform platform-1"></div>
-                <div class="platform platform-2"></div>
-                <div class="platform platform-3"></div>
-                <div class="projector-deck"></div>
-                <div class="projector-panel"></div>
-                <div class="projector-lens"></div>
-                <div class="projector-core"></div>
-                <div class="beam-cone"></div>
-                <div class="beam-column"></div>
-                <div class="beam-flare"></div>
-                <div class="ring ring-a"></div>
-                <div class="ring ring-b"></div>
-                <div class="ring ring-c"></div>
-              </div>
-
-              <div id="cardOrbit" class="card-orbit"></div>
-              <div id="beamParticles" class="beam-particles"></div>
-            </div>
-          </div>
-        </section>
-
-        <aside class="panel side-panel right-panel">
-          <div class="panel-label-row">
-            <span class="eyebrow">Selected Module</span>
-            <span id="detailIndex" class="detail-chip">01</span>
-          </div>
-
-          <h2 id="detailTitle">Profile</h2>
-          <p id="detailSubtitle" class="detail-subtitle"></p>
-          <ul id="detailBullets" class="detail-list"></ul>
-
-          <div class="actions-stack">
-            <button id="focusCardButton" class="ghost-button wide-button" type="button">
-              Focus Selected Card
-            </button>
-          </div>
-        </aside>
       </section>
 
-      <footer class="panel footerbar">
-        <div>
-          <span class="eyebrow">Mode</span>
-          <strong>Dependency-free CSS 3D scene</strong>
+      <header class="hud-panel hero-panel">
+        <div class="panel-kicker">Spatial Resume</div>
+        <h1 id="heroName">Your Name</h1>
+        <p id="heroTitle">Software Engineer · Platform Builder · Systems Operator</p>
+        <p id="heroSummary" class="hero-summary"></p>
+      </header>
+
+      <aside class="hud-panel detail-panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-kicker">Selected Module</div>
+            <div id="detailIndex" class="module-index">01</div>
+          </div>
+          <button id="focusButton" class="chip-button ghost" type="button">Focus Module</button>
         </div>
-        <div class="footer-copy">
-          This version avoids WebGL dependencies and renders a visible center projector with floating resume cards.
+        <h2 id="detailTitle">Profile</h2>
+        <p id="detailSubtitle" class="detail-subtitle"></p>
+        <ul id="detailBullets" class="detail-bullets"></ul>
+      </aside>
+
+      <aside class="hud-panel nav-panel">
+        <div class="panel-kicker">Modules</div>
+        <div id="moduleNav" class="module-nav"></div>
+      </aside>
+
+      <footer class="hud-panel dock-panel">
+        <div class="dock-left">
+          <div class="control-card">
+            <span>Drag</span>
+            <strong>Rotate view</strong>
+          </div>
+          <div class="control-card">
+            <span>Scroll</span>
+            <strong>Zoom</strong>
+          </div>
+          <div class="control-card">
+            <span>1-6</span>
+            <strong>Jump module</strong>
+          </div>
+        </div>
+
+        <div id="statRail" class="stat-rail"></div>
+
+        <div class="dock-actions">
+          <button id="orbitButton" class="chip-button ghost" type="button">Pause Orbit</button>
+          <button id="centerButton" class="chip-button primary" type="button">Center Stage</button>
         </div>
       </footer>
     </main>

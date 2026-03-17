@@ -1,10 +1,10 @@
 const resumeData = {
   profile: {
     name: "Your Name",
-    title: "Software Engineer · Systems Builder · Product-Minded Operator",
+    title: "Software Engineer · Platform Builder · Systems Operator",
     summary:
-      "This version is intentionally obvious: a projector device sits at the center and emits floating resume modules you can inspect from different angles. Replace the content, not the structure.",
-    metrics: [
+      "A stage-first hologram resume. The device stays central, the information floats as modules around it, and the UI stays out of the way until you need it.",
+    stats: [
       { value: "05+", label: "Years" },
       { value: "12", label: "Projects" },
       { value: "06", label: "Domains" },
@@ -15,57 +15,57 @@ const resumeData = {
     {
       key: "profile",
       title: "Profile",
-      subtitle: "What you do, where you operate, and what kind of technical problems you solve.",
+      subtitle: "What you do, what environments you operate in, and what kind of technical responsibility you can carry.",
       bullets: [
-        "Backend and platform-oriented engineer who prefers technically real work over cosmetic output.",
-        "Strong across debugging, delivery, systems thinking, and communication with non-specialists.",
-        "Best fit: reliability, performance, platform engineering, automation, and product-facing infrastructure."
+        "Backend and platform-oriented engineer who values technically real work over cosmetic output.",
+        "Strong at debugging, systems thinking, delivery under constraints, and translating complexity into usable structure.",
+        "Best fit: reliability, automation, infrastructure, performance, and product-facing engineering problems."
       ]
     },
     {
       key: "experience",
       title: "Experience",
-      subtitle: "Describe roles by outcomes, scope, and ownership instead of dumping task lists.",
+      subtitle: "Roles should read like ownership and outcomes, not like a pasted backlog.",
       bullets: [
-        "Owned hard implementation work where stability mattered more than appearances.",
-        "Shipped across backend, tooling, and internal workflows under practical constraints.",
-        "Improved systems by fixing root causes instead of treating symptoms."
+        "Owned difficult implementation work where stability mattered more than presentation.",
+        "Worked across backend systems, tooling, delivery workflows, and cross-functional communication.",
+        "Improved systems by fixing root causes instead of hiding them behind process or polish."
       ]
     },
     {
       key: "projects",
       title: "Projects",
-      subtitle: "Choose proof of judgment, autonomy, and measurable results.",
+      subtitle: "Projects are where judgment becomes visible: scope choices, trade-offs, and measurable decisions.",
       bullets: [
-        "Built an interactive holographic resume experience with central projection and orbiting modules.",
-        "Created automation that reduced repeated manual work and lowered friction for collaborators.",
-        "Delivered performance-focused features where clarity and responsiveness both mattered."
+        "Built interactive browser experiences that balance visual ambition with practical performance.",
+        "Created automation and tooling that removed repeated manual work for collaborators.",
+        "Shipped product and engineering work that prioritizes clarity, responsiveness, and maintainability."
       ]
     },
     {
       key: "skills",
       title: "Skills",
-      subtitle: "List what you can defend in an interview, not every keyword you have touched.",
+      subtitle: "List what you can defend deeply, not every keyword you have touched once.",
       bullets: [
-        "Core: JavaScript, TypeScript, Python, APIs, debugging, delivery discipline.",
-        "Frontend: HTML, CSS, interaction design, browser performance, accessible layouts.",
-        "Platform: CI/CD, observability, cloud services, operational clarity under pressure."
+        "Core: JavaScript, TypeScript, Python, APIs, debugging, implementation discipline.",
+        "Frontend: HTML, CSS, interaction design, browser performance, accessible UI structure.",
+        "Platform: CI/CD, observability, operational clarity, cloud services, delivery under pressure."
       ]
     },
     {
       key: "impact",
       title: "Impact",
-      subtitle: "This is where resumes usually collapse. Add evidence, not adjectives.",
+      subtitle: "This is where most resumes get weak: they substitute adjectives for evidence.",
       bullets: [
         "Reduced technical friction by simplifying implementation paths and clarifying ownership.",
-        "Improved reliability by removing weak assumptions instead of hiding them behind polish.",
-        "Made complex work usable for others through better structure, documentation, and prioritization."
+        "Improved reliability by removing weak assumptions instead of decorating unstable systems.",
+        "Made hard work easier for others through better structure, documentation, and prioritization."
       ]
     },
     {
       key: "contact",
       title: "Contact",
-      subtitle: "Make it easy for a recruiter or hiring manager to act immediately.",
+      subtitle: "A recruiter should know exactly how to act within seconds.",
       bullets: [
         "Email: you@example.com",
         "LinkedIn: linkedin.com/in/your-profile",
@@ -77,52 +77,54 @@ const resumeData = {
 
 const heroName = document.getElementById("heroName");
 const heroTitle = document.getElementById("heroTitle");
-const profileSummary = document.getElementById("profileSummary");
-const metricGrid = document.getElementById("metricGrid");
+const heroSummary = document.getElementById("heroSummary");
 const detailIndex = document.getElementById("detailIndex");
 const detailTitle = document.getElementById("detailTitle");
 const detailSubtitle = document.getElementById("detailSubtitle");
 const detailBullets = document.getElementById("detailBullets");
-const cardOrbit = document.getElementById("cardOrbit");
+const moduleOrbit = document.getElementById("moduleOrbit");
+const moduleNav = document.getElementById("moduleNav");
 const beamParticles = document.getElementById("beamParticles");
+const statRail = document.getElementById("statRail");
 const stage = document.getElementById("stage");
 const world = document.getElementById("world");
 const orbitButton = document.getElementById("orbitButton");
 const centerButton = document.getElementById("centerButton");
-const focusCardButton = document.getElementById("focusCardButton");
+const focusButton = document.getElementById("focusButton");
 
 heroName.textContent = resumeData.profile.name;
 heroTitle.textContent = resumeData.profile.title;
-profileSummary.textContent = resumeData.profile.summary;
-metricGrid.innerHTML = resumeData.profile.metrics
+heroSummary.textContent = resumeData.profile.summary;
+statRail.innerHTML = resumeData.profile.stats
   .map(
     (item) => `
-      <div class="metric">
-        <strong>${item.value}</strong>
+      <div class="stat-chip">
         <span>${item.label}</span>
+        <strong>${item.value}</strong>
       </div>
     `
   )
   .join("");
 
+const accents = ["var(--cyan)", "var(--blue)", "var(--violet)", "var(--green)", "#a9fcff", "#ffd6ff"];
+const cards = [];
+const particles = [];
+const baseAngles = resumeData.sections.map((_, index) => index * (360 / resumeData.sections.length));
+const orbitRadius = 315;
+
 let selectedIndex = 0;
-let rotationX = -22;
-let rotationY = 26;
+let rotationX = -19;
+let rotationY = 18;
 let scale = 1;
-let autoOrbit = true;
-let dragging = false;
 let targetRotationX = rotationX;
 let targetRotationY = rotationY;
 let targetScale = scale;
+let dragging = false;
+let autoOrbit = true;
 let focusMode = false;
+let orbitPhase = 0;
 
-const cards = [];
-const particleState = [];
-const orbitRadius = 330;
-const baseY = -110;
-const anchorAngles = resumeData.sections.map((_, index) => index * (360 / resumeData.sections.length));
-
-function updateDetailPanel(index) {
+function updateDetail(index) {
   const section = resumeData.sections[index];
   selectedIndex = index;
 
@@ -134,74 +136,95 @@ function updateDetailPanel(index) {
   cards.forEach((card, cardIndex) => {
     card.anchor.classList.toggle("is-selected", cardIndex === index);
   });
+
+  Array.from(moduleNav.children).forEach((pill, pillIndex) => {
+    pill.classList.toggle("active", pillIndex === index);
+  });
 }
 
-function buildCards() {
-  const accents = ["var(--cyan)", "var(--blue)", "var(--violet)", "#93ffd8", "#80f4ff", "#ffd1ff"];
-
+function buildNav() {
   resumeData.sections.forEach((section, index) => {
-    const angle = anchorAngles[index];
-    const anchor = document.createElement("button");
-    anchor.type = "button";
-    anchor.className = "card-anchor";
-    anchor.style.setProperty("--accent", accents[index % accents.length]);
-    anchor.setAttribute("aria-label", `Open ${section.title}`);
-
-    const connector = document.createElement("div");
-    connector.className = "connector";
-
-    const card3d = document.createElement("div");
-    card3d.className = "card-3d";
-
-    const glow = document.createElement("div");
-    glow.className = "card-glow";
-
-    const face = document.createElement("div");
-    face.className = "card-face";
-    face.innerHTML = `
-      <span class="card-chip">Module · ${section.key}</span>
-      <span class="card-index">${String(index + 1).padStart(2, "0")}</span>
-      <h3 class="card-title">${section.title}</h3>
-      <p class="card-subtitle">${section.subtitle}</p>
+    const pill = document.createElement("button");
+    pill.type = "button";
+    pill.className = "module-pill";
+    pill.innerHTML = `
+      <div class="pill-left">
+        <span class="pill-key">${section.key}</span>
+        <span class="pill-title">${section.title}</span>
+      </div>
+      <span class="pill-index">${String(index + 1).padStart(2, "0")}</span>
     `;
 
-    card3d.append(glow, face);
-    anchor.append(connector, card3d);
-    cardOrbit.append(anchor);
-
-    anchor.addEventListener("click", () => {
-      updateDetailPanel(index);
+    pill.addEventListener("click", () => {
+      updateDetail(index);
       focusCard(index);
     });
 
-    const card = {
-      anchor,
-      card3d,
-      connector,
-      angle,
-      lift: index % 2 === 0 ? -120 : -170,
-      swaySeed: index * 0.9,
-      depthNudge: index % 2 === 0 ? 0 : 30
-    };
+    moduleNav.appendChild(pill);
+  });
+}
 
-    cards.push(card);
+function buildCards() {
+  resumeData.sections.forEach((section, index) => {
+    const anchor = document.createElement("button");
+    anchor.type = "button";
+    anchor.className = "module-anchor";
+    anchor.style.setProperty("--accent", accents[index % accents.length]);
+    anchor.setAttribute("aria-label", `Open ${section.title}`);
+
+    const stub = document.createElement("div");
+    stub.className = "module-stub";
+
+    const card = document.createElement("div");
+    card.className = "module-card";
+
+    const glow = document.createElement("div");
+    glow.className = "module-glow";
+
+    const face = document.createElement("div");
+    face.className = "module-face";
+    face.innerHTML = `
+      <span class="module-chip">Module · ${section.key}</span>
+      <span class="module-number">${String(index + 1).padStart(2, "0")}</span>
+      <h3 class="module-title">${section.title}</h3>
+      <p class="module-subtitle">${section.subtitle}</p>
+    `;
+
+    card.append(glow, face);
+    anchor.append(stub, card);
+    moduleOrbit.appendChild(anchor);
+
+    anchor.addEventListener("click", () => {
+      updateDetail(index);
+      focusCard(index);
+    });
+
+    cards.push({
+      anchor,
+      stub,
+      card,
+      baseAngle: baseAngles[index],
+      lift: index % 2 === 0 ? -186 : -232,
+      seed: index * 0.93,
+      depth: index % 2 === 0 ? 0 : 22
+    });
   });
 }
 
 function buildParticles() {
-  for (let i = 0; i < 36; i += 1) {
+  for (let i = 0; i < 42; i += 1) {
     const particle = document.createElement("div");
     particle.className = "particle";
     beamParticles.appendChild(particle);
 
-    particleState.push({
+    particles.push({
       el: particle,
       angle: Math.random() * Math.PI * 2,
-      radius: 18 + Math.random() * 48,
-      height: Math.random() * 300,
-      speed: 24 + Math.random() * 50,
-      drift: 0.4 + Math.random() * 1.1,
-      size: 0.8 + Math.random() * 1.2
+      radius: 16 + Math.random() * 54,
+      height: Math.random() * 360,
+      speed: 0.55 + Math.random() * 1.1,
+      drift: 0.2 + Math.random() * 0.85,
+      size: 0.7 + Math.random() * 1.25
     });
   }
 }
@@ -209,28 +232,23 @@ function buildParticles() {
 function layoutCards(timeMs) {
   const t = timeMs / 1000;
 
-  cards.forEach((card, index) => {
-    const floatY = Math.sin(t * 1.2 + card.swaySeed) * 10;
-    const wobble = Math.sin(t * 0.8 + card.swaySeed * 1.7) * 8;
-    const cardIsSelected = index === selectedIndex;
-    const radius = orbitRadius + (cardIsSelected ? 24 : 0);
-    const y = card.lift + floatY;
-    const z = radius + card.depthNudge;
-    const localTiltX = cardIsSelected ? -5 : -2;
-    const scaleBoost = cardIsSelected ? 1.08 : 1;
+  cards.forEach((entry, index) => {
+    const angle = entry.baseAngle + orbitPhase;
+    const y = entry.lift + Math.sin(t * 1.15 + entry.seed) * 10;
+    const z = orbitRadius + entry.depth + (index === selectedIndex ? 20 : 0);
+    const wobbleX = Math.sin(t * 0.9 + entry.seed) * 2.4;
+    const wobbleY = Math.cos(t * 0.8 + entry.seed) * 2.8;
+    const scaleBoost = index === selectedIndex ? 1.08 : 1;
 
-    card.anchor.style.transform = `
-      rotateY(${card.angle}deg)
-      translate3d(0, ${y}px, ${z}px)
-    `;
+    entry.anchor.style.transform = `rotateY(${angle}deg) translate3d(0, ${y}px, ${z}px)`;
+    entry.stub.style.height = `${z - 44}px`;
+    entry.stub.style.transform = `translate3d(0, 0, -${z - 44}px) rotateX(90deg)`;
 
-    card.connector.style.transform = `translateZ(-${z - 36}px) rotateX(90deg)`;
-    card.connector.style.height = `${z - 52}px`;
-
-    card.card3d.style.transform = `
+    // Critical fix: front faces outward, not inward.
+    entry.card.style.transform = `
       translate3d(-50%, -50%, 0)
-      rotateY(180deg)
-      rotateX(${localTiltX + wobble * 0.08}deg)
+      rotateX(${wobbleX}deg)
+      rotateY(${wobbleY}deg)
       scale(${scaleBoost})
     `;
   });
@@ -239,50 +257,54 @@ function layoutCards(timeMs) {
 function layoutParticles(timeMs) {
   const t = timeMs / 1000;
 
-  particleState.forEach((particle) => {
-    particle.height += particle.speed * 0.18;
+  particles.forEach((particle) => {
+    particle.height += particle.speed * 1.6;
+
     if (particle.height > 360) {
       particle.height = 0;
       particle.angle = Math.random() * Math.PI * 2;
-      particle.radius = 16 + Math.random() * 46;
+      particle.radius = 16 + Math.random() * 56;
     }
 
     const x = Math.cos(particle.angle + t * particle.drift) * particle.radius;
     const z = Math.sin(particle.angle + t * particle.drift) * particle.radius;
-    const y = -30 - particle.height;
-    const scaleValue = particle.size + Math.sin(t * 3 + particle.angle) * 0.15;
+    const y = -28 - particle.height;
+    const scaleValue = particle.size + Math.sin(t * 2.6 + particle.angle) * 0.12;
 
     particle.el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) scale(${scaleValue})`;
   });
 }
 
 function applyWorldTransform() {
-  rotationX += (targetRotationX - rotationX) * 0.14;
-  rotationY += (targetRotationY - rotationY) * 0.14;
-  scale += (targetScale - scale) * 0.14;
+  rotationX += (targetRotationX - rotationX) * 0.11;
+  rotationY += (targetRotationY - rotationY) * 0.11;
+  scale += (targetScale - scale) * 0.11;
 
-  world.style.transform = `translate3d(0, 36px, 0) rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(${scale})`;
+  world.style.transform = `translate3d(0, 54px, 0) rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(${scale})`;
 }
 
 function focusCard(index) {
-  focusMode = true;
   autoOrbit = false;
+  focusMode = true;
   orbitButton.textContent = "Resume Orbit";
-  targetRotationY = 360 - anchorAngles[index];
-  targetRotationX = -18;
+
+  const angle = (baseAngles[index] + orbitPhase) % 360;
+  targetRotationY = 360 - angle;
+  targetRotationX = -16;
   targetScale = 1.08;
 }
 
-function centerDevice() {
+function centerStage() {
   focusMode = false;
-  targetRotationX = -22;
-  targetRotationY = 26;
+  targetRotationX = -19;
+  targetRotationY = 18;
   targetScale = 1;
 }
 
 function animate(timeMs) {
   if (autoOrbit && !dragging && !focusMode) {
-    targetRotationY += 0.05;
+    targetRotationY += 0.03;
+    orbitPhase += 0.045;
   }
 
   applyWorldTransform();
@@ -299,21 +321,22 @@ let dragRotationY = rotationY;
 
 stage.addEventListener("pointerdown", (event) => {
   dragging = true;
+  focusMode = false;
   stage.classList.add("dragging");
   dragStartX = event.clientX;
   dragStartY = event.clientY;
   dragRotationX = targetRotationX;
   dragRotationY = targetRotationY;
-  focusMode = false;
   stage.setPointerCapture(event.pointerId);
 });
 
 stage.addEventListener("pointermove", (event) => {
   if (!dragging) return;
+
   const dx = event.clientX - dragStartX;
   const dy = event.clientY - dragStartY;
-  targetRotationY = dragRotationY + dx * 0.28;
-  targetRotationX = Math.max(-65, Math.min(8, dragRotationX - dy * 0.18));
+  targetRotationY = dragRotationY + dx * 0.24;
+  targetRotationX = Math.max(-62, Math.min(6, dragRotationX - dy * 0.16));
 });
 
 function endDrag(event) {
@@ -341,7 +364,7 @@ stage.addEventListener(
   (event) => {
     event.preventDefault();
     const delta = Math.sign(event.deltaY);
-    targetScale = Math.max(0.72, Math.min(1.45, targetScale - delta * 0.06));
+    targetScale = Math.max(0.74, Math.min(1.42, targetScale - delta * 0.06));
   },
   { passive: false }
 );
@@ -352,13 +375,13 @@ orbitButton.addEventListener("click", () => {
   orbitButton.textContent = autoOrbit ? "Pause Orbit" : "Resume Orbit";
 });
 
-centerButton.addEventListener("click", centerDevice);
-focusCardButton.addEventListener("click", () => focusCard(selectedIndex));
+centerButton.addEventListener("click", centerStage);
+focusButton.addEventListener("click", () => focusCard(selectedIndex));
 
 window.addEventListener("keydown", (event) => {
   if (event.key >= "1" && event.key <= String(resumeData.sections.length)) {
     const index = Number(event.key) - 1;
-    updateDetailPanel(index);
+    updateDetail(index);
     focusCard(index);
   }
 
@@ -370,7 +393,8 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
+buildNav();
 buildCards();
 buildParticles();
-updateDetailPanel(0);
+updateDetail(0);
 requestAnimationFrame(animate);
