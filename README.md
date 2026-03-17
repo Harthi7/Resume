@@ -1,55 +1,36 @@
-# 3D Hologram Resume Site
+# Holographic Resume · CSS 3D Version
 
-This is a browser-based 3D resume concept built with plain HTML, CSS, JavaScript, and Three.js.
+This version is dependency-free and is designed to avoid the problem where the center scene fails to render because of external 3D libraries or WebGL issues.
 
-## What it is
+## What this fixes
 
-- A rotating 3D device that projects resume panels as holograms
-- Mouse / trackpad orbit controls so the user can inspect it from different angles
-- Clickable 3D panels for Profile, Experience, Projects, Skills, Impact, and Contact
-- HUD overlay for readable details while preserving the 3D scene
-- Static deployment friendly: works on GitHub Pages with no build step
+- visible central projector device
+- visible hologram beam
+- floating resume cards around the device
+- mouse drag to inspect from different angles
+- mouse wheel zoom
+- click a card or press 1-6 to focus a module
 
 ## Files
 
-- `index.html` — app shell and HUD
-- `styles.css` — layout and visual styling
-- `app.js` — 3D scene, animation, controls, and content data
+- `index.html`
+- `styles.css`
+- `app.js`
 
-## How to edit content
+## Publish to GitHub Pages
 
-Open `app.js` and replace the values inside:
+Replace the old files in your repo root with these three files, commit to `main`, then wait a minute or two for GitHub Pages to update.
 
-- `resumeData.profile`
-- `resumeData.sections`
+## Content to change
 
-Keep the same structure unless you also want to change rendering behavior.
+Edit `resumeData` in `app.js`:
 
-## Local run
+- `profile.name`
+- `profile.title`
+- `profile.summary`
+- `profile.metrics`
+- each item in `sections`
 
-For best results, serve it from a local server instead of double-clicking the file.
+## Note
 
-Examples:
-
-### Python
-
-```bash
-python -m http.server 8000
-```
-
-Then open:
-
-```text
-http://localhost:8000/
-```
-
-## GitHub Pages
-
-Upload these files to the root of your repo and publish from:
-
-- Branch: `main`
-- Folder: `/(root)`
-
-## Important tradeoff
-
-This is visually stronger than a normal resume site, but it is also heavier and less direct. Use it as a portfolio layer, not as your only hiring asset. Keep a standard PDF resume and a simpler recruiter-friendly page as well.
+This is still a browser simulation, not physical hologram hardware. But it does render a projector + floating modules scene that can be inspected from multiple angles without relying on external 3D packages.

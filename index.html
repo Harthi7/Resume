@@ -3,72 +3,116 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3D Hologram Resume</title>
+    <title>Holographic Resume · CSS 3D</title>
     <meta
       name="description"
-      content="Interactive 3D hologram resume experience rendered in the browser."
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
+      content="Interactive holographic resume with a central projector device and 3D review controls."
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="bg-noise"></div>
     <div class="scanlines"></div>
-    <canvas id="scene"></canvas>
 
-    <div class="hud">
-      <header class="hud-panel hud-header">
+    <main class="app-shell">
+      <header class="panel topbar">
         <div>
-          <span class="eyebrow">3D HOLOGRAM RESUME</span>
-          <h1 id="hudName">Your Name</h1>
-          <p id="hudTitle">Software Engineer</p>
+          <div class="eyebrow">Holographic Resume</div>
+          <h1 id="heroName">Your Name</h1>
+          <p id="heroTitle">Software Engineer</p>
         </div>
-        <button id="autoRotateButton" class="ghost-button" type="button">Pause Orbit</button>
+
+        <div class="topbar-actions">
+          <button id="orbitButton" class="ghost-button" type="button">Pause Orbit</button>
+          <button id="centerButton" class="primary-button" type="button">Center Device</button>
+        </div>
       </header>
 
-      <aside class="hud-panel hud-brief">
-        <div class="label-row">
-          <span class="label">Summary</span>
-          <span class="live-dot"></span>
-        </div>
-        <p id="hudSummary"></p>
+      <section class="workspace">
+        <aside class="panel side-panel left-panel">
+          <div class="panel-label-row">
+            <span class="eyebrow">Profile</span>
+            <span class="live-dot"></span>
+          </div>
 
-        <div class="metrics" id="metricGrid"></div>
+          <p id="profileSummary" class="summary-copy"></p>
 
-        <div class="help-grid">
-          <div><span>Drag</span><strong>Rotate</strong></div>
-          <div><span>Scroll</span><strong>Zoom</strong></div>
-          <div><span>Click Card</span><strong>Inspect</strong></div>
-          <div><span>1-6</span><strong>Jump</strong></div>
-        </div>
-      </aside>
+          <div id="metricGrid" class="metric-grid"></div>
 
-      <section class="hud-panel hud-detail">
-        <div class="label-row">
-          <span class="label">Selected Module</span>
-          <span id="detailIndex" class="small-tag">01</span>
-        </div>
-        <h2 id="detailTitle">Profile</h2>
-        <p id="detailSubtitle" class="detail-subtitle"></p>
-        <ul id="detailBullets" class="detail-list"></ul>
+          <div class="control-grid">
+            <div><span>Drag</span><strong>Rotate Scene</strong></div>
+            <div><span>Scroll</span><strong>Zoom</strong></div>
+            <div><span>Click Card</span><strong>Inspect</strong></div>
+            <div><span>1-6</span><strong>Jump</strong></div>
+          </div>
+        </aside>
+
+        <section class="stage-panel panel">
+          <div class="stage-header">
+            <div>
+              <span class="eyebrow">3D Stage</span>
+              <strong>Projector + orbiting resume modules</strong>
+            </div>
+            <div class="stage-hint">Drag the scene to inspect the hologram from different angles</div>
+          </div>
+
+          <div id="stage" class="stage">
+            <div id="world" class="world">
+              <div class="floor floor-outer"></div>
+              <div class="floor floor-inner"></div>
+              <div class="grid-disc"></div>
+
+              <div class="device-group">
+                <div class="platform platform-1"></div>
+                <div class="platform platform-2"></div>
+                <div class="platform platform-3"></div>
+                <div class="projector-deck"></div>
+                <div class="projector-panel"></div>
+                <div class="projector-lens"></div>
+                <div class="projector-core"></div>
+                <div class="beam-cone"></div>
+                <div class="beam-column"></div>
+                <div class="beam-flare"></div>
+                <div class="ring ring-a"></div>
+                <div class="ring ring-b"></div>
+                <div class="ring ring-c"></div>
+              </div>
+
+              <div id="cardOrbit" class="card-orbit"></div>
+              <div id="beamParticles" class="beam-particles"></div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="panel side-panel right-panel">
+          <div class="panel-label-row">
+            <span class="eyebrow">Selected Module</span>
+            <span id="detailIndex" class="detail-chip">01</span>
+          </div>
+
+          <h2 id="detailTitle">Profile</h2>
+          <p id="detailSubtitle" class="detail-subtitle"></p>
+          <ul id="detailBullets" class="detail-list"></ul>
+
+          <div class="actions-stack">
+            <button id="focusCardButton" class="ghost-button wide-button" type="button">
+              Focus Selected Card
+            </button>
+          </div>
+        </aside>
       </section>
 
-      <footer class="hud-panel hud-footer">
-        <div class="footer-left">
-          <span class="label">Mode</span>
-          <strong>Interactive 3D review</strong>
+      <footer class="panel footerbar">
+        <div>
+          <span class="eyebrow">Mode</span>
+          <strong>Dependency-free CSS 3D scene</strong>
         </div>
-        <div class="footer-actions">
-          <button id="focusDeviceButton" class="ghost-button" type="button">Center Device</button>
-          <button id="focusCardButton" class="primary-button" type="button">Focus Selected Card</button>
+        <div class="footer-copy">
+          This version avoids WebGL dependencies and renders a visible center projector with floating resume cards.
         </div>
       </footer>
-    </div>
+    </main>
 
-    <script type="module" src="app.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>
