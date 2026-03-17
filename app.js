@@ -59,7 +59,7 @@ const resumeData = {
 
 const hud = document.getElementById("hud");
 const dock = document.getElementById("dock");
-const hideHudButton = document.getElementById("hideHudButton");
+const uiToggleButton = document.getElementById("uiToggleButton");
 const orbitButton = document.getElementById("orbitButton");
 const resetButton = document.getElementById("resetButton");
 const stage = document.getElementById("stage");
@@ -73,12 +73,12 @@ const hudName = document.getElementById("hudName");
 const hudTitle = document.getElementById("hudTitle");
 
 const state = {
-  rotationX: -8,
-  rotationY: 10,
-  targetRotationX: -8,
-  targetRotationY: 10,
-  scale: 0.9,
-  targetScale: 0.9,
+  rotationX: -2,
+  rotationY: 0,
+  targetRotationX: -2,
+  targetRotationY: 0,
+  scale: 0.96,
+  targetScale: 0.96,
   dragging: false,
   autoDrift: true,
   hudHidden: false,
@@ -200,14 +200,14 @@ function applyWorldTransform() {
   state.rotationY += (state.targetRotationY - state.rotationY) * 0.12;
   state.scale += (state.targetScale - state.scale) * 0.12;
 
-  world.style.transform = `translate3d(0, 28px, 0) rotateX(${state.rotationX}deg) rotateY(${state.rotationY}deg) scale(${state.scale})`;
+  world.style.transform = `translate3d(0, 0, 0) rotateX(${state.rotationX}deg) rotateY(${state.rotationY}deg) scale(${state.scale})`;
 }
 
 function animateSheet(timeMs) {
   const t = timeMs / 1000;
-  const floatY = Math.sin(t * 0.95) * 6;
+  const floatY = Math.sin(t * 0.9) * 4;
 
-  sheetRig.style.transform = `translate3d(0, ${-42 + floatY}px, 0)`;
+  sheetRig.style.transform = `translate3d(0, ${floatY}px, 0)`;
   resumeSheet.style.transform = `translate3d(0, 0, 30px)`;
 }
 
@@ -234,7 +234,7 @@ function animateSparks(timeMs) {
 
 function loop(timeMs) {
   if (state.autoDrift && !state.dragging) {
-    state.targetRotationY += 0.018;
+    state.targetRotationY += 0.008;
     state.driftPhase += 0.02;
   }
 
@@ -245,9 +245,9 @@ function loop(timeMs) {
 }
 
 function resetView() {
-  state.targetRotationX = -8;
-  state.targetRotationY = 10;
-  state.targetScale = 0.9;
+  state.targetRotationX = -2;
+  state.targetRotationY = 0;
+  state.targetScale = 0.96;
 }
 
 function onPointerDown(event) {
@@ -266,8 +266,8 @@ function onPointerMove(event) {
   const deltaY = event.clientY - state.lastY;
 
   state.targetRotationY += deltaX * 0.18;
-  state.targetRotationX -= deltaY * 0.08;
-  state.targetRotationX = Math.max(-16, Math.min(2, state.targetRotationX));
+  state.targetRotationX -= deltaY * 0.06;
+  state.targetRotationX = Math.max(-10, Math.min(4, state.targetRotationX));
 
   state.lastX = event.clientX;
   state.lastY = event.clientY;
@@ -281,14 +281,15 @@ function onPointerUp() {
 function onWheel(event) {
   event.preventDefault();
   state.targetScale += event.deltaY * -0.0006;
-  state.targetScale = Math.max(0.8, Math.min(1.14, state.targetScale));
+  state.targetScale = Math.max(0.84, Math.min(1.22, state.targetScale));
 }
 
 function toggleHud() {
   state.hudHidden = !state.hudHidden;
   hud.classList.toggle("hidden", state.hudHidden);
   dock.classList.toggle("hidden", state.hudHidden);
-  hideHudButton.textContent = state.hudHidden ? "Show HUD" : "Hide HUD";
+  uiToggleButton.textContent = state.hudHidden ? "Show UI" : "Hide UI";
+  uiToggleButton.setAttribute("aria-pressed", String(state.hudHidden));
 }
 
 function toggleDrift() {
@@ -304,7 +305,7 @@ function bindEvents() {
 
   orbitButton.addEventListener("click", toggleDrift);
   resetButton.addEventListener("click", resetView);
-  hideHudButton.addEventListener("click", toggleHud);
+  uiToggleButton.addEventListener("click", toggleHud);
 
   window.addEventListener("keydown", (event) => {
     if (event.key.toLowerCase() === "r") {

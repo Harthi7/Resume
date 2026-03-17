@@ -1,11 +1,19 @@
-# Projected Resume Sheet v4
+# Projected Resume Sheet v5
 
-This revision fixes three practical problems from the previous version:
+This revision fixes three UX issues from the previous version:
 
-- The sheet no longer tilts independently in pitch/roll, so it stays readable.
-- The resume is now taller and portrait-oriented, with an internal scroll area as a fallback for longer content.
-- The circular top and bottom rings were removed to keep the stage cleaner.
+- the HUD no longer stretches across the stage and cover the resume
+- the UI can always be restored with the persistent top-right toggle
+- the resume sheet is centered more cleanly in the viewport for zooming
+- the device sits lower so the emitter is visible under the hologram sheet
+
+## Files
+- `index.html`
+- `styles.css`
+- `app.js`
 
 ## Publish
+Push the files to the root of your GitHub Pages repository and wait for Pages to redeploy.
 
-Upload these files to the root of your GitHub Pages repository and push to `main`.
+## Edit content
+Replace the `resumeData` object in `app.js` with your actual resume content.
