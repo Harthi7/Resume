@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Holographic Resume</title>
+    <meta
+      name="description"
+      content="Interactive holographic resume website with animated sections, projects, experience timeline, and recruiter-friendly navigation."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <canvas id="holo-bg" aria-hidden="true"></canvas>
+
+    <div class="noise-layer" aria-hidden="true"></div>
+    <div class="scanline-layer" aria-hidden="true"></div>
+    <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span class="brand-text" id="brandName">Your Name</span>
+      </div>
+
+      <nav class="topnav" aria-label="Primary">
+        <a href="#hero" data-section-link="hero">Home</a>
+        <a href="#about" data-section-link="about">About</a>
+        <a href="#experience" data-section-link="experience">Experience</a>
+        <a href="#projects" data-section-link="projects">Projects</a>
+        <a href="#contact" data-section-link="contact">Contact</a>
+      </nav>
+
+      <div class="topbar-actions">
+        <button class="ghost-btn" id="commandButton" type="button">Open Command</button>
+        <a class="primary-btn" id="resumeLink" href="#contact">Download CV</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero section" id="hero">
+        <div class="hero-copy reveal">
+          <div class="eyebrow">INTERACTIVE PROFILE // LIVE PORTFOLIO</div>
+          <h1>
+            <span id="heroName">Your Name</span>
+            <span class="gradient-text">Holographic Resume</span>
+          </h1>
+          <p class="hero-summary" id="heroSummary">
+            Replace this text with a sharp one-paragraph summary of your value, strongest domain, and what makes you hard to ignore.
+          </p>
+
+          <div class="hero-tags" id="heroTags"></div>
+
+          <div class="hero-actions">
+            <a class="primary-btn" href="#projects">Review Projects</a>
+            <button class="ghost-btn" id="signalBoost" type="button">Signal Boost</button>
+          </div>
+        </div>
+
+        <div class="hero-panel hologram-card reveal tilt-card">
+          <div class="panel-header">
+            <span class="panel-title">PROFILE SIGNAL</span>
+            <span class="panel-status">ONLINE</span>
+          </div>
+          <div class="stats-grid" id="statsGrid"></div>
+          <div class="hero-terminal">
+            <div class="terminal-label">REVIEW MODE</div>
+            <div class="terminal-body" id="typewriter"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="overview-grid section">
+        <article class="hologram-card reveal tilt-card">
+          <div class="card-kicker">WHY THIS FORMAT</div>
+          <h2>Built for recruiters who scan fast</h2>
+          <p>
+            This layout combines visual impact with structured information density. It looks distinctive without hiding the facts that matter.
+          </p>
+        </article>
+
+        <article class="hologram-card reveal tilt-card">
+          <div class="card-kicker">INTERACTION LAYER</div>
+          <h2>Projects open like mission files</h2>
+          <p>
+            Hover, filter, inspect, and jump through sections using the command palette. The site behaves more like an interface than a static page.
+          </p>
+        </article>
+
+        <article class="hologram-card reveal tilt-card">
+          <div class="card-kicker">CUSTOMIZATION</div>
+          <h2>Data-driven content</h2>
+          <p>
+            Edit one JavaScript object to replace the demo content with your own summary, experience, skills, and links.
+          </p>
+        </article>
+      </section>
+
+      <section class="section" id="about">
+        <div class="section-heading reveal">
+          <div class="eyebrow">SECTION // ABOUT</div>
+          <h2>Core profile</h2>
+        </div>
+
+        <div class="about-grid">
+          <article class="hologram-card reveal tilt-card">
+            <h3>Snapshot</h3>
+            <p id="aboutText"></p>
+          </article>
+
+          <article class="hologram-card reveal tilt-card">
+            <h3>Focus areas</h3>
+            <div class="chip-wrap" id="focusAreas"></div>
+          </article>
+
+          <article class="hologram-card reveal tilt-card">
+            <h3>System highlights</h3>
+            <ul class="bullet-list" id="highlightsList"></ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="experience">
+        <div class="section-heading reveal">
+          <div class="eyebrow">SECTION // EXPERIENCE</div>
+          <h2>Timeline</h2>
+        </div>
+
+        <div class="timeline" id="experienceTimeline"></div>
+      </section>
+
+      <section class="section" id="skills">
+        <div class="section-heading reveal">
+          <div class="eyebrow">SECTION // SKILLS</div>
+          <h2>Capability map</h2>
+        </div>
+
+        <div class="skill-filter reveal" id="skillFilters"></div>
+        <div class="skill-grid" id="skillGrid"></div>
+      </section>
+
+      <section class="section" id="projects">
+        <div class="section-heading reveal">
+          <div class="eyebrow">SECTION // PROJECTS</div>
+          <h2>Mission files</h2>
+        </div>
+
+        <div class="project-grid" id="projectGrid"></div>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="section-heading reveal">
+          <div class="eyebrow">SECTION // CONTACT</div>
+          <h2>Open channel</h2>
+        </div>
+
+        <div class="contact-grid">
+          <article class="hologram-card reveal tilt-card">
+            <h3>Connect</h3>
+            <p id="contactLine"></p>
+            <div class="contact-actions" id="contactActions"></div>
+          </article>
+
+          <article class="hologram-card reveal tilt-card">
+            <h3>Preferred roles</h3>
+            <div class="chip-wrap" id="roleInterests"></div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <aside class="dock hologram-card reveal">
+      <div class="dock-label">FAST NAV</div>
+      <button type="button" data-jump="#about">About</button>
+      <button type="button" data-jump="#experience">Experience</button>
+      <button type="button" data-jump="#projects">Projects</button>
+      <button type="button" data-jump="#contact">Contact</button>
+    </aside>
+
+    <div class="command-palette hidden" id="commandPalette" aria-hidden="true">
+      <div class="palette-backdrop" data-close-palette="true"></div>
+      <div class="palette-panel hologram-card">
+        <div class="palette-header">
+          <span>COMMAND MODE</span>
+          <span>ESC to close</span>
+        </div>
+        <input
+          id="commandInput"
+          class="palette-input"
+          type="text"
+          placeholder="Type: about, experience, projects, contact, resume"
+          autocomplete="off"
+        />
+        <div class="palette-results" id="commandResults"></div>
+      </div>
+    </div>
+
+    <div class="modal hidden" id="projectModal" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal="true"></div>
+      <div class="modal-panel hologram-card">
+        <button class="modal-close" id="closeModal" type="button">×</button>
+        <div class="modal-body" id="modalBody"></div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
