@@ -1,20 +1,21 @@
-# Spatial Hologram Resume
+# Projected Resume Sheet
 
-This version fixes two concrete issues from the previous iteration:
-
-1. The layout is now stage-first instead of using large side columns.
-2. The floating resume cards face outward, so the user sees the card fronts instead of the backs.
+A minimal browser-based holographic resume scene:
+- a central device/projector
+- a single floating resume sheet
+- readable from both sides
+- drag to rotate, scroll to zoom
+- no build step and no external dependencies
 
 ## Files
-
 - `index.html`
 - `styles.css`
 - `app.js`
 
-## Publish
+## Edit your content
+Open `app.js` and replace the `resumeData` object.
 
-Push the files to your GitHub repo root and wait for GitHub Pages to redeploy.
-
-## Customize
-
-Edit the `resumeData` object in `app.js`.
+## Publish on GitHub Pages
+Put these files in the repo root and keep Pages set to:
+- Branch: `main`
+- Folder: `/(root)`

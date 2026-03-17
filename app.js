@@ -1,400 +1,316 @@
 const resumeData = {
-  profile: {
-    name: "Your Name",
-    title: "Software Engineer · Platform Builder · Systems Operator",
-    summary:
-      "A stage-first hologram resume. The device stays central, the information floats as modules around it, and the UI stays out of the way until you need it.",
-    stats: [
-      { value: "05+", label: "Years" },
-      { value: "12", label: "Projects" },
-      { value: "06", label: "Domains" },
-      { value: "24h", label: "Reply SLA" }
-    ]
-  },
-  sections: [
+  name: "Abdullah Alharthi",
+  title: "Backend & Platform Engineer",
+  tagline: "Systems-minded builder focused on platform reliability, automation, debugging, and technically real work.",
+  meta: [
+    { label: "Focus", value: "Backend · Platform · Automation" },
+    { label: "Current lane", value: "Reliability, data platforms, implementation" },
+    { label: "Style", value: "Product-aware, systems-first, execution-heavy" },
+    { label: "Based in", value: "Saudi Arabia" }
+  ],
+  leftSections: [
     {
-      key: "profile",
       title: "Profile",
-      subtitle: "What you do, what environments you operate in, and what kind of technical responsibility you can carry.",
-      bullets: [
-        "Backend and platform-oriented engineer who values technically real work over cosmetic output.",
-        "Strong at debugging, systems thinking, delivery under constraints, and translating complexity into usable structure.",
-        "Best fit: reliability, automation, infrastructure, performance, and product-facing engineering problems."
+      items: [
+        "Backend and platform-oriented engineer with strong interest in reliability, debugging, system structure, and delivery under constraints.",
+        "Best in roles where technical judgment, implementation discipline, and cross-functional communication all matter at the same time."
       ]
     },
     {
-      key: "experience",
-      title: "Experience",
-      subtitle: "Roles should read like ownership and outcomes, not like a pasted backlog.",
-      bullets: [
-        "Owned difficult implementation work where stability mattered more than presentation.",
-        "Worked across backend systems, tooling, delivery workflows, and cross-functional communication.",
-        "Improved systems by fixing root causes instead of hiding them behind process or polish."
-      ]
-    },
-    {
-      key: "projects",
-      title: "Projects",
-      subtitle: "Projects are where judgment becomes visible: scope choices, trade-offs, and measurable decisions.",
-      bullets: [
-        "Built interactive browser experiences that balance visual ambition with practical performance.",
-        "Created automation and tooling that removed repeated manual work for collaborators.",
-        "Shipped product and engineering work that prioritizes clarity, responsiveness, and maintainability."
-      ]
-    },
-    {
-      key: "skills",
-      title: "Skills",
-      subtitle: "List what you can defend deeply, not every keyword you have touched once.",
-      bullets: [
-        "Core: JavaScript, TypeScript, Python, APIs, debugging, implementation discipline.",
-        "Frontend: HTML, CSS, interaction design, browser performance, accessible UI structure.",
-        "Platform: CI/CD, observability, operational clarity, cloud services, delivery under pressure."
-      ]
-    },
-    {
-      key: "impact",
-      title: "Impact",
-      subtitle: "This is where most resumes get weak: they substitute adjectives for evidence.",
-      bullets: [
-        "Reduced technical friction by simplifying implementation paths and clarifying ownership.",
-        "Improved reliability by removing weak assumptions instead of decorating unstable systems.",
-        "Made hard work easier for others through better structure, documentation, and prioritization."
-      ]
-    },
-    {
-      key: "contact",
-      title: "Contact",
-      subtitle: "A recruiter should know exactly how to act within seconds.",
-      bullets: [
-        "Email: you@example.com",
-        "LinkedIn: linkedin.com/in/your-profile",
-        "GitHub: github.com/your-profile"
+      title: "Technical Strengths",
+      items: [
+        "APIs, platform workflows, automation, debugging, CI/CD, data platform operations",
+        "JavaScript, TypeScript, Python, browser UI, implementation quality, practical system design"
       ]
     }
-  ]
+  ],
+  rightSections: [
+    {
+      title: "Current Work",
+      items: [
+        "IBM Watsonx.data related engineering work across ingestion APIs, platform behavior, and test or automation flows where reliability matters.",
+        "Hands-on with issue triage, cluster behavior, root cause analysis, and implementation work that is closer to the system than to presentation."
+      ]
+    },
+    {
+      title: "Strategic Interests",
+      items: [
+        "Quantum computing and optimization workflows with emphasis on practical benchmarking against classical systems.",
+        "Product, infrastructure, and business-side thinking where technical work needs to connect to real outcomes, not just internal activity."
+      ]
+    },
+    {
+      title: "Selected Direction",
+      items: [
+        "Build toward platform, backend, systems, and advanced technical roles where depth compounds instead of getting diluted into generic coordination.",
+        "Use engineering credibility as the base layer for larger product, research, and venture opportunities over time."
+      ]
+    }
+  ],
+  contacts: [
+    { label: "GitHub", value: "github.com/Harthi7" },
+    { label: "LinkedIn", value: "linkedin.com/in/abdullah-alharthi" },
+    { label: "Email", value: "your.email@example.com" }
+  ],
+  footerLeft: "Projected single-sheet resume · minimal hologram layout",
+  footerRight: "Edit resumeData in app.js to replace placeholders and tighten claims"
 };
 
-const heroName = document.getElementById("heroName");
-const heroTitle = document.getElementById("heroTitle");
-const heroSummary = document.getElementById("heroSummary");
-const detailIndex = document.getElementById("detailIndex");
-const detailTitle = document.getElementById("detailTitle");
-const detailSubtitle = document.getElementById("detailSubtitle");
-const detailBullets = document.getElementById("detailBullets");
-const moduleOrbit = document.getElementById("moduleOrbit");
-const moduleNav = document.getElementById("moduleNav");
-const beamParticles = document.getElementById("beamParticles");
-const statRail = document.getElementById("statRail");
+const hud = document.getElementById("hud");
+const dock = document.getElementById("dock");
+const hideHudButton = document.getElementById("hideHudButton");
+const orbitButton = document.getElementById("orbitButton");
+const resetButton = document.getElementById("resetButton");
 const stage = document.getElementById("stage");
 const world = document.getElementById("world");
-const orbitButton = document.getElementById("orbitButton");
-const centerButton = document.getElementById("centerButton");
-const focusButton = document.getElementById("focusButton");
+const sheetRig = document.getElementById("sheetRig");
+const resumeSheet = document.getElementById("resumeSheet");
+const sheetFront = document.getElementById("sheetFront");
+const sheetBack = document.getElementById("sheetBack");
+const sparkLayer = document.getElementById("sparkLayer");
+const hudName = document.getElementById("hudName");
+const hudTitle = document.getElementById("hudTitle");
 
-heroName.textContent = resumeData.profile.name;
-heroTitle.textContent = resumeData.profile.title;
-heroSummary.textContent = resumeData.profile.summary;
-statRail.innerHTML = resumeData.profile.stats
-  .map(
-    (item) => `
-      <div class="stat-chip">
-        <span>${item.label}</span>
-        <strong>${item.value}</strong>
+const state = {
+  rotationX: -17,
+  rotationY: 16,
+  targetRotationX: -17,
+  targetRotationY: 16,
+  scale: 1,
+  targetScale: 1,
+  dragging: false,
+  autoDrift: true,
+  hudHidden: false,
+  driftPhase: 0,
+  lastX: 0,
+  lastY: 0
+};
+
+const sparks = [];
+
+function renderSectionBlock(section) {
+  return `
+    <section class="section-block">
+      <h3 class="section-title">${section.title}</h3>
+      <ul class="resume-list">
+        ${section.items.map((item) => `<li>${item}</li>`).join("")}
+      </ul>
+    </section>
+  `;
+}
+
+function renderResumeFace() {
+  return `
+    <div class="sheet-content">
+      <div class="resume-left">
+        <header class="resume-head">
+          <h2 class="resume-name">${resumeData.name}</h2>
+          <p class="resume-role">${resumeData.title}</p>
+          <p class="resume-summary">${resumeData.tagline}</p>
+        </header>
+
+        <div class="mini-grid">
+          ${resumeData.meta
+            .map(
+              (item) => `
+                <div class="mini-chip">
+                  <span>${item.label}</span>
+                  <strong>${item.value}</strong>
+                </div>
+              `
+            )
+            .join("")}
+        </div>
+
+        ${resumeData.leftSections.map(renderSectionBlock).join("")}
       </div>
-    `
-  )
-  .join("");
 
-const accents = ["var(--cyan)", "var(--blue)", "var(--violet)", "var(--green)", "#a9fcff", "#ffd6ff"];
-const cards = [];
-const particles = [];
-const baseAngles = resumeData.sections.map((_, index) => index * (360 / resumeData.sections.length));
-const orbitRadius = 315;
+      <div class="resume-right">
+        <div class="right-stack">
+          ${resumeData.rightSections.map(renderSectionBlock).join("")}
+        </div>
 
-let selectedIndex = 0;
-let rotationX = -19;
-let rotationY = 18;
-let scale = 1;
-let targetRotationX = rotationX;
-let targetRotationY = rotationY;
-let targetScale = scale;
-let dragging = false;
-let autoOrbit = true;
-let focusMode = false;
-let orbitPhase = 0;
+        <section class="section-block">
+          <h3 class="section-title">Contact</h3>
+          ${resumeData.contacts
+            .map(
+              (item) => `
+                <div class="contact-line">
+                  <strong>${item.label}</strong>
+                  <span>${item.value}</span>
+                </div>
+              `
+            )
+            .join("")}
+        </section>
 
-function updateDetail(index) {
-  const section = resumeData.sections[index];
-  selectedIndex = index;
-
-  detailIndex.textContent = String(index + 1).padStart(2, "0");
-  detailTitle.textContent = section.title;
-  detailSubtitle.textContent = section.subtitle;
-  detailBullets.innerHTML = section.bullets.map((bullet) => `<li>${bullet}</li>`).join("");
-
-  cards.forEach((card, cardIndex) => {
-    card.anchor.classList.toggle("is-selected", cardIndex === index);
-  });
-
-  Array.from(moduleNav.children).forEach((pill, pillIndex) => {
-    pill.classList.toggle("active", pillIndex === index);
-  });
-}
-
-function buildNav() {
-  resumeData.sections.forEach((section, index) => {
-    const pill = document.createElement("button");
-    pill.type = "button";
-    pill.className = "module-pill";
-    pill.innerHTML = `
-      <div class="pill-left">
-        <span class="pill-key">${section.key}</span>
-        <span class="pill-title">${section.title}</span>
+        <div class="resume-footer">
+          <span>${resumeData.footerLeft}</span>
+          <span>${resumeData.footerRight}</span>
+        </div>
       </div>
-      <span class="pill-index">${String(index + 1).padStart(2, "0")}</span>
-    `;
-
-    pill.addEventListener("click", () => {
-      updateDetail(index);
-      focusCard(index);
-    });
-
-    moduleNav.appendChild(pill);
-  });
+    </div>
+  `;
 }
 
-function buildCards() {
-  resumeData.sections.forEach((section, index) => {
-    const anchor = document.createElement("button");
-    anchor.type = "button";
-    anchor.className = "module-anchor";
-    anchor.style.setProperty("--accent", accents[index % accents.length]);
-    anchor.setAttribute("aria-label", `Open ${section.title}`);
+function populateContent() {
+  hudName.textContent = resumeData.name;
+  hudTitle.textContent = resumeData.title;
 
-    const stub = document.createElement("div");
-    stub.className = "module-stub";
-
-    const card = document.createElement("div");
-    card.className = "module-card";
-
-    const glow = document.createElement("div");
-    glow.className = "module-glow";
-
-    const face = document.createElement("div");
-    face.className = "module-face";
-    face.innerHTML = `
-      <span class="module-chip">Module · ${section.key}</span>
-      <span class="module-number">${String(index + 1).padStart(2, "0")}</span>
-      <h3 class="module-title">${section.title}</h3>
-      <p class="module-subtitle">${section.subtitle}</p>
-    `;
-
-    card.append(glow, face);
-    anchor.append(stub, card);
-    moduleOrbit.appendChild(anchor);
-
-    anchor.addEventListener("click", () => {
-      updateDetail(index);
-      focusCard(index);
-    });
-
-    cards.push({
-      anchor,
-      stub,
-      card,
-      baseAngle: baseAngles[index],
-      lift: index % 2 === 0 ? -186 : -232,
-      seed: index * 0.93,
-      depth: index % 2 === 0 ? 0 : 22
-    });
-  });
+  const faceMarkup = renderResumeFace();
+  sheetFront.innerHTML = faceMarkup;
+  sheetBack.innerHTML = faceMarkup;
 }
 
-function buildParticles() {
-  for (let i = 0; i < 42; i += 1) {
-    const particle = document.createElement("div");
-    particle.className = "particle";
-    beamParticles.appendChild(particle);
+function buildSparks() {
+  for (let i = 0; i < 30; i += 1) {
+    const spark = document.createElement("div");
+    spark.className = "spark";
+    sparkLayer.appendChild(spark);
 
-    particles.push({
-      el: particle,
+    sparks.push({
+      el: spark,
       angle: Math.random() * Math.PI * 2,
-      radius: 16 + Math.random() * 54,
+      radius: 18 + Math.random() * 90,
       height: Math.random() * 360,
-      speed: 0.55 + Math.random() * 1.1,
-      drift: 0.2 + Math.random() * 0.85,
-      size: 0.7 + Math.random() * 1.25
+      speed: 0.45 + Math.random() * 0.95,
+      drift: 0.15 + Math.random() * 0.55,
+      scale: 0.7 + Math.random() * 0.9
     });
   }
-}
-
-function layoutCards(timeMs) {
-  const t = timeMs / 1000;
-
-  cards.forEach((entry, index) => {
-    const angle = entry.baseAngle + orbitPhase;
-    const y = entry.lift + Math.sin(t * 1.15 + entry.seed) * 10;
-    const z = orbitRadius + entry.depth + (index === selectedIndex ? 20 : 0);
-    const wobbleX = Math.sin(t * 0.9 + entry.seed) * 2.4;
-    const wobbleY = Math.cos(t * 0.8 + entry.seed) * 2.8;
-    const scaleBoost = index === selectedIndex ? 1.08 : 1;
-
-    entry.anchor.style.transform = `rotateY(${angle}deg) translate3d(0, ${y}px, ${z}px)`;
-    entry.stub.style.height = `${z - 44}px`;
-    entry.stub.style.transform = `translate3d(0, 0, -${z - 44}px) rotateX(90deg)`;
-
-    // Critical fix: front faces outward, not inward.
-    entry.card.style.transform = `
-      translate3d(-50%, -50%, 0)
-      rotateX(${wobbleX}deg)
-      rotateY(${wobbleY}deg)
-      scale(${scaleBoost})
-    `;
-  });
-}
-
-function layoutParticles(timeMs) {
-  const t = timeMs / 1000;
-
-  particles.forEach((particle) => {
-    particle.height += particle.speed * 1.6;
-
-    if (particle.height > 360) {
-      particle.height = 0;
-      particle.angle = Math.random() * Math.PI * 2;
-      particle.radius = 16 + Math.random() * 56;
-    }
-
-    const x = Math.cos(particle.angle + t * particle.drift) * particle.radius;
-    const z = Math.sin(particle.angle + t * particle.drift) * particle.radius;
-    const y = -28 - particle.height;
-    const scaleValue = particle.size + Math.sin(t * 2.6 + particle.angle) * 0.12;
-
-    particle.el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) scale(${scaleValue})`;
-  });
 }
 
 function applyWorldTransform() {
-  rotationX += (targetRotationX - rotationX) * 0.11;
-  rotationY += (targetRotationY - rotationY) * 0.11;
-  scale += (targetScale - scale) * 0.11;
+  state.rotationX += (state.targetRotationX - state.rotationX) * 0.12;
+  state.rotationY += (state.targetRotationY - state.rotationY) * 0.12;
+  state.scale += (state.targetScale - state.scale) * 0.12;
 
-  world.style.transform = `translate3d(0, 54px, 0) rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(${scale})`;
+  world.style.transform = `translate3d(0, 46px, 0) rotateX(${state.rotationX}deg) rotateY(${state.rotationY}deg) scale(${state.scale})`;
 }
 
-function focusCard(index) {
-  autoOrbit = false;
-  focusMode = true;
-  orbitButton.textContent = "Resume Orbit";
+function animateSheet(timeMs) {
+  const t = timeMs / 1000;
+  const floatY = Math.sin(t * 1.05) * 8;
+  const roll = Math.sin(t * 0.75) * 1.5;
+  const pitch = Math.cos(t * 0.9) * 1.4;
+  const spin = Math.sin(t * 0.45) * 1.8;
 
-  const angle = (baseAngles[index] + orbitPhase) % 360;
-  targetRotationY = 360 - angle;
-  targetRotationX = -16;
-  targetScale = 1.08;
+  sheetRig.style.transform = `translate3d(0, ${-12 + floatY}px, 0)`;
+  resumeSheet.style.transform = `translate3d(0, 0, 30px) rotateX(${pitch}deg) rotateY(${spin}deg) rotateZ(${roll}deg)`;
 }
 
-function centerStage() {
-  focusMode = false;
-  targetRotationX = -19;
-  targetRotationY = 18;
-  targetScale = 1;
+function animateSparks(timeMs) {
+  const t = timeMs / 1000;
+
+  sparks.forEach((spark) => {
+    spark.height += spark.speed * 1.4;
+
+    if (spark.height > 380) {
+      spark.height = 0;
+      spark.angle = Math.random() * Math.PI * 2;
+      spark.radius = 18 + Math.random() * 95;
+    }
+
+    const x = Math.cos(spark.angle + t * spark.drift) * spark.radius;
+    const z = Math.sin(spark.angle + t * spark.drift) * spark.radius;
+    const y = 120 - spark.height;
+    const scale = spark.scale + Math.sin(t * 2.3 + spark.angle) * 0.12;
+
+    spark.el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) scale(${scale})`;
+  });
 }
 
-function animate(timeMs) {
-  if (autoOrbit && !dragging && !focusMode) {
-    targetRotationY += 0.03;
-    orbitPhase += 0.045;
+function loop(timeMs) {
+  if (state.autoDrift && !state.dragging) {
+    state.targetRotationY += 0.03;
+    state.driftPhase += 0.02;
   }
 
   applyWorldTransform();
-  layoutCards(timeMs);
-  layoutParticles(timeMs);
-
-  requestAnimationFrame(animate);
+  animateSheet(timeMs);
+  animateSparks(timeMs);
+  requestAnimationFrame(loop);
 }
 
-let dragStartX = 0;
-let dragStartY = 0;
-let dragRotationX = rotationX;
-let dragRotationY = rotationY;
+function resetView() {
+  state.targetRotationX = -17;
+  state.targetRotationY = 16;
+  state.targetScale = 1;
+}
 
-stage.addEventListener("pointerdown", (event) => {
-  dragging = true;
-  focusMode = false;
+function onPointerDown(event) {
+  state.dragging = true;
   stage.classList.add("dragging");
-  dragStartX = event.clientX;
-  dragStartY = event.clientY;
-  dragRotationX = targetRotationX;
-  dragRotationY = targetRotationY;
-  stage.setPointerCapture(event.pointerId);
-});
-
-stage.addEventListener("pointermove", (event) => {
-  if (!dragging) return;
-
-  const dx = event.clientX - dragStartX;
-  const dy = event.clientY - dragStartY;
-  targetRotationY = dragRotationY + dx * 0.24;
-  targetRotationX = Math.max(-62, Math.min(6, dragRotationX - dy * 0.16));
-});
-
-function endDrag(event) {
-  dragging = false;
-  stage.classList.remove("dragging");
-  if (event?.pointerId !== undefined) {
-    try {
-      stage.releasePointerCapture(event.pointerId);
-    } catch {
-      // no-op
-    }
-  }
+  state.lastX = event.clientX;
+  state.lastY = event.clientY;
 }
 
-stage.addEventListener("pointerup", endDrag);
-stage.addEventListener("pointercancel", endDrag);
-stage.addEventListener("pointerleave", () => {
-  if (!dragging) return;
-  dragging = false;
+function onPointerMove(event) {
+  if (!state.dragging) {
+    return;
+  }
+
+  const deltaX = event.clientX - state.lastX;
+  const deltaY = event.clientY - state.lastY;
+
+  state.targetRotationY += deltaX * 0.22;
+  state.targetRotationX -= deltaY * 0.14;
+  state.targetRotationX = Math.max(-32, Math.min(8, state.targetRotationX));
+
+  state.lastX = event.clientX;
+  state.lastY = event.clientY;
+}
+
+function onPointerUp() {
+  state.dragging = false;
   stage.classList.remove("dragging");
-});
+}
 
-stage.addEventListener(
-  "wheel",
-  (event) => {
-    event.preventDefault();
-    const delta = Math.sign(event.deltaY);
-    targetScale = Math.max(0.74, Math.min(1.42, targetScale - delta * 0.06));
-  },
-  { passive: false }
-);
+function onWheel(event) {
+  event.preventDefault();
+  state.targetScale += event.deltaY * -0.00075;
+  state.targetScale = Math.max(0.78, Math.min(1.34, state.targetScale));
+}
 
-orbitButton.addEventListener("click", () => {
-  autoOrbit = !autoOrbit;
-  focusMode = false;
-  orbitButton.textContent = autoOrbit ? "Pause Orbit" : "Resume Orbit";
-});
+function toggleHud() {
+  state.hudHidden = !state.hudHidden;
+  hud.classList.toggle("hidden", state.hudHidden);
+  dock.classList.toggle("hidden", state.hudHidden);
+  hideHudButton.textContent = state.hudHidden ? "Show HUD" : "Hide HUD";
+}
 
-centerButton.addEventListener("click", centerStage);
-focusButton.addEventListener("click", () => focusCard(selectedIndex));
+function toggleDrift() {
+  state.autoDrift = !state.autoDrift;
+  orbitButton.textContent = state.autoDrift ? "Pause Drift" : "Resume Drift";
+}
 
-window.addEventListener("keydown", (event) => {
-  if (event.key >= "1" && event.key <= String(resumeData.sections.length)) {
-    const index = Number(event.key) - 1;
-    updateDetail(index);
-    focusCard(index);
-  }
+function bindEvents() {
+  stage.addEventListener("pointerdown", onPointerDown);
+  window.addEventListener("pointermove", onPointerMove);
+  window.addEventListener("pointerup", onPointerUp);
+  stage.addEventListener("wheel", onWheel, { passive: false });
 
-  if (event.code === "Space") {
-    event.preventDefault();
-    autoOrbit = !autoOrbit;
-    focusMode = false;
-    orbitButton.textContent = autoOrbit ? "Pause Orbit" : "Resume Orbit";
-  }
-});
+  orbitButton.addEventListener("click", toggleDrift);
+  resetButton.addEventListener("click", resetView);
+  hideHudButton.addEventListener("click", toggleHud);
 
-buildNav();
-buildCards();
-buildParticles();
-updateDetail(0);
-requestAnimationFrame(animate);
+  window.addEventListener("keydown", (event) => {
+    if (event.key.toLowerCase() === "r") {
+      resetView();
+    }
+
+    if (event.key.toLowerCase() === "h") {
+      toggleHud();
+    }
+
+    if (event.code === "Space") {
+      event.preventDefault();
+      toggleDrift();
+    }
+  });
+}
+
+populateContent();
+buildSparks();
+bindEvents();
+requestAnimationFrame(loop);
