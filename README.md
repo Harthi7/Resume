@@ -1,52 +1,55 @@
-# Holographic Resume Website
+# 3D Hologram Resume Site
 
-A static, interactive resume site built with plain HTML, CSS, and JavaScript.
+This is a browser-based 3D resume concept built with plain HTML, CSS, JavaScript, and Three.js.
+
+## What it is
+
+- A rotating 3D device that projects resume panels as holograms
+- Mouse / trackpad orbit controls so the user can inspect it from different angles
+- Clickable 3D panels for Profile, Experience, Projects, Skills, Impact, and Contact
+- HUD overlay for readable details while preserving the 3D scene
+- Static deployment friendly: works on GitHub Pages with no build step
 
 ## Files
 
-- `index.html` — page structure
-- `styles.css` — holographic design, layout, responsiveness
-- `script.js` — resume data, animations, project modal, command palette, filters
+- `index.html` — app shell and HUD
+- `styles.css` — layout and visual styling
+- `app.js` — 3D scene, animation, controls, and content data
 
-## How to use
+## How to edit content
 
-1. Open `script.js`
-2. Edit the `resumeData` object at the top:
-   - `profile`
-   - `stats`
-   - `experience`
-   - `skills`
-   - `projects`
-3. Set `resumeLink` to your real PDF resume URL or file path.
-4. Open `index.html` in a browser.
+Open `app.js` and replace the values inside:
 
-## How to deploy
+- `resumeData.profile`
+- `resumeData.sections`
 
-You can deploy this on:
+Keep the same structure unless you also want to change rendering behavior.
 
-- GitHub Pages
-- Netlify
-- Vercel (static)
-- Cloudflare Pages
+## Local run
 
-No build step is required.
+For best results, serve it from a local server instead of double-clicking the file.
 
-## Practical advice
+Examples:
 
-This design is visually strong, but resumes fail when style hides substance. Replace the demo copy with concrete results:
+### Python
 
-- what you built
-- what changed because of it
-- what scale or constraint mattered
-- what stack you used
+```bash
+python -m http.server 8000
+```
 
-## Suggested next upgrade
+Then open:
 
-If you want this to become a serious portfolio rather than just a nice landing page, the next layer should be:
+```text
+http://localhost:8000/
+```
 
-- case study pages per project
-- downloadable PDF resume
-- real metrics
-- dark/light or recruiter mode toggle
-- analytics
-- contact form backed by a serverless function
+## GitHub Pages
+
+Upload these files to the root of your repo and publish from:
+
+- Branch: `main`
+- Folder: `/(root)`
+
+## Important tradeoff
+
+This is visually stronger than a normal resume site, but it is also heavier and less direct. Use it as a portfolio layer, not as your only hiring asset. Keep a standard PDF resume and a simpler recruiter-friendly page as well.
