@@ -1,7 +1,8 @@
 const resumeData = {
   name: "Abdullah Alharthi",
   title: "Backend & Platform Engineer",
-  tagline: "Systems-minded builder focused on platform reliability, automation, debugging, and technically real work.",
+  tagline:
+    "Systems-minded builder focused on platform reliability, automation, debugging, and technically real work.",
   meta: [
     { label: "Focus", value: "Backend · Platform · Automation" },
     { label: "Current lane", value: "Reliability, data platforms, implementation" },
@@ -72,12 +73,12 @@ const hudName = document.getElementById("hudName");
 const hudTitle = document.getElementById("hudTitle");
 
 const state = {
-  rotationX: -17,
-  rotationY: 16,
-  targetRotationX: -17,
-  targetRotationY: 16,
-  scale: 1,
-  targetScale: 1,
+  rotationX: -8,
+  rotationY: 10,
+  targetRotationX: -8,
+  targetRotationY: 10,
+  scale: 0.9,
+  targetScale: 0.9,
   dragging: false,
   autoDrift: true,
   hudHidden: false,
@@ -100,9 +101,11 @@ function renderSectionBlock(section) {
 }
 
 function renderResumeFace() {
+  const allSections = [...resumeData.leftSections, ...resumeData.rightSections];
+
   return `
-    <div class="sheet-content">
-      <div class="resume-left">
+    <div class="sheet-scroll">
+      <div class="sheet-content">
         <header class="resume-head">
           <h2 class="resume-name">${resumeData.name}</h2>
           <p class="resume-role">${resumeData.title}</p>
@@ -122,26 +125,24 @@ function renderResumeFace() {
             .join("")}
         </div>
 
-        ${resumeData.leftSections.map(renderSectionBlock).join("")}
-      </div>
-
-      <div class="resume-right">
-        <div class="right-stack">
-          ${resumeData.rightSections.map(renderSectionBlock).join("")}
+        <div class="section-grid">
+          ${allSections.map(renderSectionBlock).join("")}
         </div>
 
         <section class="section-block">
           <h3 class="section-title">Contact</h3>
-          ${resumeData.contacts
-            .map(
-              (item) => `
-                <div class="contact-line">
-                  <strong>${item.label}</strong>
-                  <span>${item.value}</span>
-                </div>
-              `
-            )
-            .join("")}
+          <div class="contact-grid">
+            ${resumeData.contacts
+              .map(
+                (item) => `
+                  <div class="contact-line">
+                    <strong>${item.label}</strong>
+                    <span>${item.value}</span>
+                  </div>
+                `
+              )
+              .join("")}
+          </div>
         </section>
 
         <div class="resume-footer">
@@ -160,10 +161,24 @@ function populateContent() {
   const faceMarkup = renderResumeFace();
   sheetFront.innerHTML = faceMarkup;
   sheetBack.innerHTML = faceMarkup;
+
+  document.querySelectorAll(".sheet-scroll").forEach((node) => {
+    node.addEventListener("pointerdown", (event) => {
+      event.stopPropagation();
+    });
+
+    node.addEventListener(
+      "wheel",
+      (event) => {
+        event.stopPropagation();
+      },
+      { passive: true }
+    );
+  });
 }
 
 function buildSparks() {
-  for (let i = 0; i < 30; i += 1) {
+  for (let i = 0; i < 22; i += 1) {
     const spark = document.createElement("div");
     spark.className = "spark";
     sparkLayer.appendChild(spark);
@@ -172,10 +187,10 @@ function buildSparks() {
       el: spark,
       angle: Math.random() * Math.PI * 2,
       radius: 18 + Math.random() * 90,
-      height: Math.random() * 360,
-      speed: 0.45 + Math.random() * 0.95,
-      drift: 0.15 + Math.random() * 0.55,
-      scale: 0.7 + Math.random() * 0.9
+      height: Math.random() * 420,
+      speed: 0.4 + Math.random() * 0.8,
+      drift: 0.12 + Math.random() * 0.4,
+      scale: 0.68 + Math.random() * 0.8
     });
   }
 }
@@ -185,27 +200,24 @@ function applyWorldTransform() {
   state.rotationY += (state.targetRotationY - state.rotationY) * 0.12;
   state.scale += (state.targetScale - state.scale) * 0.12;
 
-  world.style.transform = `translate3d(0, 46px, 0) rotateX(${state.rotationX}deg) rotateY(${state.rotationY}deg) scale(${state.scale})`;
+  world.style.transform = `translate3d(0, 28px, 0) rotateX(${state.rotationX}deg) rotateY(${state.rotationY}deg) scale(${state.scale})`;
 }
 
 function animateSheet(timeMs) {
   const t = timeMs / 1000;
-  const floatY = Math.sin(t * 1.05) * 8;
-  const roll = Math.sin(t * 0.75) * 1.5;
-  const pitch = Math.cos(t * 0.9) * 1.4;
-  const spin = Math.sin(t * 0.45) * 1.8;
+  const floatY = Math.sin(t * 0.95) * 6;
 
-  sheetRig.style.transform = `translate3d(0, ${-12 + floatY}px, 0)`;
-  resumeSheet.style.transform = `translate3d(0, 0, 30px) rotateX(${pitch}deg) rotateY(${spin}deg) rotateZ(${roll}deg)`;
+  sheetRig.style.transform = `translate3d(0, ${-42 + floatY}px, 0)`;
+  resumeSheet.style.transform = `translate3d(0, 0, 30px)`;
 }
 
 function animateSparks(timeMs) {
   const t = timeMs / 1000;
 
   sparks.forEach((spark) => {
-    spark.height += spark.speed * 1.4;
+    spark.height += spark.speed * 1.25;
 
-    if (spark.height > 380) {
+    if (spark.height > 430) {
       spark.height = 0;
       spark.angle = Math.random() * Math.PI * 2;
       spark.radius = 18 + Math.random() * 95;
@@ -213,8 +225,8 @@ function animateSparks(timeMs) {
 
     const x = Math.cos(spark.angle + t * spark.drift) * spark.radius;
     const z = Math.sin(spark.angle + t * spark.drift) * spark.radius;
-    const y = 120 - spark.height;
-    const scale = spark.scale + Math.sin(t * 2.3 + spark.angle) * 0.12;
+    const y = 140 - spark.height;
+    const scale = spark.scale + Math.sin(t * 2.1 + spark.angle) * 0.1;
 
     spark.el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) scale(${scale})`;
   });
@@ -222,7 +234,7 @@ function animateSparks(timeMs) {
 
 function loop(timeMs) {
   if (state.autoDrift && !state.dragging) {
-    state.targetRotationY += 0.03;
+    state.targetRotationY += 0.018;
     state.driftPhase += 0.02;
   }
 
@@ -233,9 +245,9 @@ function loop(timeMs) {
 }
 
 function resetView() {
-  state.targetRotationX = -17;
-  state.targetRotationY = 16;
-  state.targetScale = 1;
+  state.targetRotationX = -8;
+  state.targetRotationY = 10;
+  state.targetScale = 0.9;
 }
 
 function onPointerDown(event) {
@@ -253,9 +265,9 @@ function onPointerMove(event) {
   const deltaX = event.clientX - state.lastX;
   const deltaY = event.clientY - state.lastY;
 
-  state.targetRotationY += deltaX * 0.22;
-  state.targetRotationX -= deltaY * 0.14;
-  state.targetRotationX = Math.max(-32, Math.min(8, state.targetRotationX));
+  state.targetRotationY += deltaX * 0.18;
+  state.targetRotationX -= deltaY * 0.08;
+  state.targetRotationX = Math.max(-16, Math.min(2, state.targetRotationX));
 
   state.lastX = event.clientX;
   state.lastY = event.clientY;
@@ -268,8 +280,8 @@ function onPointerUp() {
 
 function onWheel(event) {
   event.preventDefault();
-  state.targetScale += event.deltaY * -0.00075;
-  state.targetScale = Math.max(0.78, Math.min(1.34, state.targetScale));
+  state.targetScale += event.deltaY * -0.0006;
+  state.targetScale = Math.max(0.8, Math.min(1.14, state.targetScale));
 }
 
 function toggleHud() {

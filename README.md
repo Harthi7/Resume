@@ -1,21 +1,11 @@
-# Projected Resume Sheet
+# Projected Resume Sheet v4
 
-A minimal browser-based holographic resume scene:
-- a central device/projector
-- a single floating resume sheet
-- readable from both sides
-- drag to rotate, scroll to zoom
-- no build step and no external dependencies
+This revision fixes three practical problems from the previous version:
 
-## Files
-- `index.html`
-- `styles.css`
-- `app.js`
+- The sheet no longer tilts independently in pitch/roll, so it stays readable.
+- The resume is now taller and portrait-oriented, with an internal scroll area as a fallback for longer content.
+- The circular top and bottom rings were removed to keep the stage cleaner.
 
-## Edit your content
-Open `app.js` and replace the `resumeData` object.
+## Publish
 
-## Publish on GitHub Pages
-Put these files in the repo root and keep Pages set to:
-- Branch: `main`
-- Folder: `/(root)`
+Upload these files to the root of your GitHub Pages repository and push to `main`.
