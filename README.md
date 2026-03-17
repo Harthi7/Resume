@@ -17,3 +17,9 @@ Push the files to the root of your GitHub Pages repository and wait for Pages to
 
 ## Edit content
 Replace the `resumeData` object in `app.js` with your actual resume content.
+
+
+Version v6 fixes:
+- smaller bottom-right control dock
+- wrapped contact values so long LinkedIn/email text stays inside cards
+- emitter particles moved below and behind the hologram sheet

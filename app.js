@@ -178,7 +178,7 @@ function populateContent() {
 }
 
 function buildSparks() {
-  for (let i = 0; i < 22; i += 1) {
+  for (let i = 0; i < 18; i += 1) {
     const spark = document.createElement("div");
     spark.className = "spark";
     sparkLayer.appendChild(spark);
@@ -186,9 +186,9 @@ function buildSparks() {
     sparks.push({
       el: spark,
       angle: Math.random() * Math.PI * 2,
-      radius: 18 + Math.random() * 90,
-      height: Math.random() * 420,
-      speed: 0.4 + Math.random() * 0.8,
+      radius: 8 + Math.random() * 34,
+      height: Math.random() * 60,
+      speed: 0.22 + Math.random() * 0.34,
       drift: 0.12 + Math.random() * 0.4,
       scale: 0.68 + Math.random() * 0.8
     });
@@ -206,27 +206,30 @@ function applyWorldTransform() {
 function animateSheet(timeMs) {
   const t = timeMs / 1000;
   const floatY = Math.sin(t * 0.9) * 4;
+  const baseY = -28;
 
-  sheetRig.style.transform = `translate3d(0, ${floatY}px, 0)`;
+  sheetRig.style.transform = `translate3d(0, ${baseY + floatY}px, 0)`;
   resumeSheet.style.transform = `translate3d(0, 0, 30px)`;
 }
 
 function animateSparks(timeMs) {
   const t = timeMs / 1000;
 
-  sparks.forEach((spark) => {
-    spark.height += spark.speed * 1.25;
+  sparkLayer.style.transform = "translate3d(0, 412px, -140px)";
 
-    if (spark.height > 430) {
+  sparks.forEach((spark) => {
+    spark.height += spark.speed;
+
+    if (spark.height > 72) {
       spark.height = 0;
       spark.angle = Math.random() * Math.PI * 2;
-      spark.radius = 18 + Math.random() * 95;
+      spark.radius = 8 + Math.random() * 40;
     }
 
     const x = Math.cos(spark.angle + t * spark.drift) * spark.radius;
-    const z = Math.sin(spark.angle + t * spark.drift) * spark.radius;
-    const y = 140 - spark.height;
-    const scale = spark.scale + Math.sin(t * 2.1 + spark.angle) * 0.1;
+    const z = Math.sin(spark.angle + t * spark.drift) * (spark.radius * 0.32);
+    const y = -spark.height;
+    const scale = spark.scale + Math.sin(t * 2.1 + spark.angle) * 0.06;
 
     spark.el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) scale(${scale})`;
   });
@@ -294,7 +297,7 @@ function toggleHud() {
 
 function toggleDrift() {
   state.autoDrift = !state.autoDrift;
-  orbitButton.textContent = state.autoDrift ? "Pause Drift" : "Resume Drift";
+  orbitButton.textContent = state.autoDrift ? "Pause" : "Resume";
 }
 
 function bindEvents() {

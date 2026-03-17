@@ -271,7 +271,7 @@ button {
 .sheet-rig {
   width: 0;
   height: 0;
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(0, -28px, 0);
 }
 
 .sheet-aura {
@@ -480,6 +480,7 @@ button {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  min-width: 0;
   padding: 10px 12px;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.025);
@@ -493,6 +494,14 @@ button {
   font-size: 0.76rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.contact-line span {
+  display: block;
+  min-width: 0;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .resume-footer {
@@ -540,15 +549,15 @@ button {
 }
 
 .hud-dock {
-  right: 24px;
-  bottom: 24px;
-  width: min(500px, calc(100vw - 120px));
+  right: 18px;
+  bottom: 18px;
+  width: min(320px, calc(100vw - 132px));
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 14px;
-  padding: 14px 16px;
-  border-radius: 22px;
+  gap: 8px;
+  padding: 9px 10px;
+  border-radius: 16px;
 }
 
 .hud.hidden {
@@ -590,7 +599,7 @@ button {
 .primary-button {
   border: none;
   border-radius: 999px;
-  padding: 12px 18px;
+  padding: 9px 13px;
   cursor: pointer;
   transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, opacity 180ms ease;
 }
@@ -625,7 +634,7 @@ button {
 .dock-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
@@ -638,12 +647,19 @@ button {
   flex: 0 0 auto;
 }
 
+.dock-actions .ghost-button,
+.dock-actions .primary-button {
+  padding: 8px 10px;
+  font-size: 0.78rem;
+}
+
+
 .dock-chip {
-  padding: 9px 12px;
-  border-radius: 14px;
+  padding: 6px 8px;
+  border-radius: 11px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(135, 251, 255, 0.08);
-  min-width: 104px;
+  min-width: 68px;
 }
 
 .dock-chip span {
@@ -651,12 +667,12 @@ button {
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-size: 0.64rem;
-  margin-bottom: 4px;
+  font-size: 0.54rem;
+  margin-bottom: 2px;
 }
 
 .dock-chip strong {
-  font-size: 0.84rem;
+  font-size: 0.68rem;
 }
 
 @media (max-width: 1100px) {
@@ -707,7 +723,7 @@ button {
     right: 14px;
     bottom: 14px;
     width: auto;
-    padding: 12px 14px;
+    padding: 10px 12px;
     flex-direction: column;
     align-items: stretch;
   }
