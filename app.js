@@ -89,6 +89,18 @@ const state = {
 
 const sparks = [];
 
+const visitCounterConfig = {
+  namespace: "harthi7-resume-site",
+  key: "projected-resume-visits",
+  dedupeHours: 12
+};
+
+const visitCounterState = {
+  root: null,
+  valueEl: null,
+  statusEl: null
+};
+
 const layout = {
   sheetBaseY: -92,
   sheetFloatAmplitude: 3.5,
@@ -310,6 +322,148 @@ function toggleDrift() {
   orbitButton.textContent = state.autoDrift ? "Pause" : "Resume";
 }
 
+function ensureVisitCounterUi() {
+  if (visitCounterState.root) {
+    return visitCounterState;
+  }
+
+  const hudBlock = hud.querySelector(".hud-block");
+  const counterCard = document.createElement("div");
+  counterCard.id = "visitCounterCard";
+  Object.assign(counterCard.style, {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "10px",
+    marginTop: "12px",
+    padding: "8px 10px",
+    borderRadius: "12px",
+    maxWidth: "100%",
+    background: "rgba(255, 255, 255, 0.04)",
+    border: "1px solid rgba(135, 251, 255, 0.12)",
+    boxShadow: "inset 0 0 0 1px rgba(255, 255, 255, 0.02)"
+  });
+
+  const label = document.createElement("span");
+  label.textContent = "Visits";
+  Object.assign(label.style, {
+    color: "var(--muted)",
+    textTransform: "uppercase",
+    letterSpacing: "0.08em",
+    fontSize: "0.64rem",
+    flex: "0 0 auto"
+  });
+
+  const value = document.createElement("strong");
+  value.textContent = "…";
+  Object.assign(value.style, {
+    fontSize: "0.84rem",
+    fontWeight: "700",
+    letterSpacing: "0.01em"
+  });
+
+  const status = document.createElement("span");
+  status.textContent = "Connecting";
+  Object.assign(status.style, {
+    color: "var(--muted)",
+    fontSize: "0.68rem",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis"
+  });
+
+  counterCard.append(label, value, status);
+  hudBlock.appendChild(counterCard);
+
+  visitCounterState.root = counterCard;
+  visitCounterState.valueEl = value;
+  visitCounterState.statusEl = status;
+
+  return visitCounterState;
+}
+
+function updateVisitCounterUi(valueText, statusText) {
+  const ui = ensureVisitCounterUi();
+  ui.valueEl.textContent = valueText;
+  ui.statusEl.textContent = statusText;
+}
+
+function loadCounterApiLibrary() {
+  if (window.Counter) {
+    return Promise.resolve(window.Counter);
+  }
+
+  return new Promise((resolve, reject) => {
+    const existing = document.querySelector('script[data-counterapi="true"]');
+
+    if (existing) {
+      existing.addEventListener("load", () => resolve(window.Counter), { once: true });
+      existing.addEventListener("error", () => reject(new Error("CounterAPI failed to load.")), { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js";
+    script.async = true;
+    script.dataset.counterapi = "true";
+    script.onload = () => resolve(window.Counter);
+    script.onerror = () => reject(new Error("CounterAPI failed to load."));
+    document.head.appendChild(script);
+  });
+}
+
+function getVisitStorageKey() {
+  return `visit-counter:${visitCounterConfig.namespace}:${visitCounterConfig.key}`;
+}
+
+function shouldIncrementVisit() {
+  const now = Date.now();
+  const cooldownMs = visitCounterConfig.dedupeHours * 60 * 60 * 1000;
+
+  try {
+    const lastCountedAt = Number(window.localStorage.getItem(getVisitStorageKey()) || 0);
+    return !lastCountedAt || now - lastCountedAt > cooldownMs;
+  } catch (error) {
+    return true;
+  }
+}
+
+function markVisitIncremented() {
+  try {
+    window.localStorage.setItem(getVisitStorageKey(), String(Date.now()));
+  } catch (error) {
+    // Ignore storage failures and keep the counter functional.
+  }
+}
+
+async function initVisitCounter() {
+  updateVisitCounterUi("…", "Loading");
+
+  try {
+    const CounterApi = await loadCounterApiLibrary();
+    const counter = new CounterApi({
+      version: "v1",
+      namespace: visitCounterConfig.namespace,
+      timeout: 5000
+    });
+
+    const incremented = shouldIncrementVisit();
+    const result = incremented
+      ? await counter.up(visitCounterConfig.key)
+      : await counter.get(visitCounterConfig.key);
+
+    if (incremented) {
+      markVisitIncremented();
+    }
+
+    const countValue = Number.isFinite(result?.value) ? result.value.toLocaleString() : "—";
+    const statusText = incremented ? "Updated" : "Live";
+    updateVisitCounterUi(countValue, statusText);
+  } catch (error) {
+    console.error("Visit counter error:", error);
+    updateVisitCounterUi("—", "Unavailable");
+  }
+}
+
 function bindEvents() {
   stage.addEventListener("pointerdown", onPointerDown);
   window.addEventListener("pointermove", onPointerMove);
@@ -339,4 +493,5 @@ function bindEvents() {
 populateContent();
 buildSparks();
 bindEvents();
+initVisitCounter();
 requestAnimationFrame(loop);
