@@ -89,6 +89,16 @@ const state = {
 
 const sparks = [];
 
+const layout = {
+  sheetBaseY: -92,
+  sheetFloatAmplitude: 3.5,
+  sparkAnchorY: 364,
+  sparkAnchorZ: 24,
+  sparkMaxHeight: 46,
+  sparkMinRadius: 4,
+  sparkRadiusRange: 20
+};
+
 function renderSectionBlock(section) {
   return `
     <section class="section-block">
@@ -178,7 +188,7 @@ function populateContent() {
 }
 
 function buildSparks() {
-  for (let i = 0; i < 18; i += 1) {
+  for (let i = 0; i < 20; i += 1) {
     const spark = document.createElement("div");
     spark.className = "spark";
     sparkLayer.appendChild(spark);
@@ -186,11 +196,11 @@ function buildSparks() {
     sparks.push({
       el: spark,
       angle: Math.random() * Math.PI * 2,
-      radius: 8 + Math.random() * 34,
-      height: Math.random() * 60,
-      speed: 0.22 + Math.random() * 0.34,
-      drift: 0.12 + Math.random() * 0.4,
-      scale: 0.68 + Math.random() * 0.8
+      radius: layout.sparkMinRadius + Math.random() * layout.sparkRadiusRange,
+      height: Math.random() * (layout.sparkMaxHeight * 0.8),
+      speed: 0.18 + Math.random() * 0.18,
+      drift: 0.08 + Math.random() * 0.18,
+      scale: 0.62 + Math.random() * 0.45
     });
   }
 }
@@ -205,31 +215,31 @@ function applyWorldTransform() {
 
 function animateSheet(timeMs) {
   const t = timeMs / 1000;
-  const floatY = Math.sin(t * 0.9) * 4;
-  const baseY = -28;
+  const floatY = Math.sin(t * 0.9) * layout.sheetFloatAmplitude;
 
-  sheetRig.style.transform = `translate3d(0, ${baseY + floatY}px, 0)`;
+  sheetRig.style.transform = `translate3d(0, ${layout.sheetBaseY + floatY}px, 0)`;
   resumeSheet.style.transform = `translate3d(0, 0, 30px)`;
 }
 
 function animateSparks(timeMs) {
   const t = timeMs / 1000;
 
-  sparkLayer.style.transform = "translate3d(0, 412px, -140px)";
+  sparkLayer.style.transform = `translate3d(0, ${layout.sparkAnchorY}px, ${layout.sparkAnchorZ}px)`;
 
   sparks.forEach((spark) => {
     spark.height += spark.speed;
 
-    if (spark.height > 72) {
+    if (spark.height > layout.sparkMaxHeight) {
       spark.height = 0;
       spark.angle = Math.random() * Math.PI * 2;
-      spark.radius = 8 + Math.random() * 40;
+      spark.radius = layout.sparkMinRadius + Math.random() * layout.sparkRadiusRange;
     }
 
-    const x = Math.cos(spark.angle + t * spark.drift) * spark.radius;
-    const z = Math.sin(spark.angle + t * spark.drift) * (spark.radius * 0.32);
+    const orbit = spark.angle + t * spark.drift;
+    const x = Math.cos(orbit) * spark.radius;
+    const z = Math.sin(orbit) * (spark.radius * 0.52);
     const y = -spark.height;
-    const scale = spark.scale + Math.sin(t * 2.1 + spark.angle) * 0.06;
+    const scale = spark.scale + Math.sin(t * 2.1 + spark.angle) * 0.05;
 
     spark.el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) scale(${scale})`;
   });
