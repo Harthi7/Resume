@@ -57,11 +57,6 @@ const resumeData = {
   footerRight: "Edit resumeData in app.js to replace placeholders and tighten claims"
 };
 
-const analyticsConfig = {
-  provider: "goatcounter",
-  goatcounterCode: "" // Set this to your GoatCounter site code, e.g. "my-resume-site".
-};
-
 const hud = document.getElementById("hud");
 const dock = document.getElementById("dock");
 const uiToggleButton = document.getElementById("uiToggleButton");
@@ -76,6 +71,8 @@ const sheetBack = document.getElementById("sheetBack");
 const sparkLayer = document.getElementById("sparkLayer");
 const hudName = document.getElementById("hudName");
 const hudTitle = document.getElementById("hudTitle");
+
+let statsChip;
 
 const state = {
   rotationX: -2,
@@ -94,15 +91,112 @@ const state = {
 
 const sparks = [];
 
-const layout = {
-  sheetBaseY: -92,
-  sheetFloatAmplitude: 3.5,
-  sparkAnchorY: 364,
-  sparkAnchorZ: 24,
-  sparkMaxHeight: 46,
-  sparkMinRadius: 4,
-  sparkRadiusRange: 20
-};
+
+function injectStatsChipStyles() {
+  const style = document.createElement("style");
+  style.textContent = `
+    .stats-chip {
+      position: fixed;
+      left: max(18px, env(safe-area-inset-left));
+      bottom: max(18px, env(safe-area-inset-bottom));
+      z-index: 14;
+      width: min(198px, calc(100vw - 110px));
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(135, 251, 255, 0.14);
+      background: linear-gradient(180deg, rgba(6, 14, 24, 0.72), rgba(3, 8, 16, 0.66));
+      box-shadow:
+        0 12px 28px rgba(0, 0, 0, 0.26),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .stats-chip.hidden {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+    }
+
+    .stats-chip__eyebrow {
+      margin: 0 0 6px;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(135, 251, 255, 0.72);
+    }
+
+    .stats-chip__grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 5px 10px;
+      align-items: baseline;
+    }
+
+    .stats-chip__label {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(163, 186, 211, 0.72);
+    }
+
+    .stats-chip__value {
+      min-width: 0;
+      font-size: 11px;
+      line-height: 1.3;
+      color: rgba(238, 248, 255, 0.92);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @media (max-width: 900px) {
+      .stats-chip {
+        width: min(184px, calc(100vw - 96px));
+        padding: 9px 10px;
+      }
+
+      .stats-chip__value {
+        font-size: 10px;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+function createStatsChip() {
+  injectStatsChipStyles();
+
+  statsChip = document.createElement("aside");
+  statsChip.className = "stats-chip";
+  statsChip.setAttribute("aria-hidden", "true");
+  statsChip.innerHTML = `
+    <p class="stats-chip__eyebrow">Scene Stats</p>
+    <div class="stats-chip__grid">
+      <span class="stats-chip__label">Name</span>
+      <span class="stats-chip__value" data-stat="name"></span>
+      <span class="stats-chip__label">Role</span>
+      <span class="stats-chip__value" data-stat="role"></span>
+      <span class="stats-chip__label">View</span>
+      <span class="stats-chip__value">Drag / Wheel</span>
+    </div>
+  `;
+
+  document.body.appendChild(statsChip);
+}
+
+function applyChromeTweaks() {
+  hud.style.display = "none";
+
+  dock.style.left = "auto";
+  dock.style.right = "22px";
+  dock.style.bottom = "22px";
+  dock.style.transform = "none";
+  dock.style.maxWidth = "unset";
+}
+
 
 function renderSectionBlock(section) {
   return `
@@ -173,6 +267,11 @@ function populateContent() {
   hudName.textContent = resumeData.name;
   hudTitle.textContent = resumeData.title;
 
+  if (statsChip) {
+    statsChip.querySelector('[data-stat="name"]').textContent = resumeData.name;
+    statsChip.querySelector('[data-stat="role"]').textContent = resumeData.title;
+  }
+
   const faceMarkup = renderResumeFace();
   sheetFront.innerHTML = faceMarkup;
   sheetBack.innerHTML = faceMarkup;
@@ -193,7 +292,7 @@ function populateContent() {
 }
 
 function buildSparks() {
-  for (let i = 0; i < 20; i += 1) {
+  for (let i = 0; i < 18; i += 1) {
     const spark = document.createElement("div");
     spark.className = "spark";
     sparkLayer.appendChild(spark);
@@ -201,11 +300,11 @@ function buildSparks() {
     sparks.push({
       el: spark,
       angle: Math.random() * Math.PI * 2,
-      radius: layout.sparkMinRadius + Math.random() * layout.sparkRadiusRange,
-      height: Math.random() * (layout.sparkMaxHeight * 0.8),
-      speed: 0.18 + Math.random() * 0.18,
-      drift: 0.08 + Math.random() * 0.18,
-      scale: 0.62 + Math.random() * 0.45
+      radius: 8 + Math.random() * 34,
+      height: Math.random() * 60,
+      speed: 0.22 + Math.random() * 0.34,
+      drift: 0.12 + Math.random() * 0.4,
+      scale: 0.68 + Math.random() * 0.8
     });
   }
 }
@@ -220,31 +319,31 @@ function applyWorldTransform() {
 
 function animateSheet(timeMs) {
   const t = timeMs / 1000;
-  const floatY = Math.sin(t * 0.9) * layout.sheetFloatAmplitude;
+  const floatY = Math.sin(t * 0.9) * 4;
+  const baseY = -28;
 
-  sheetRig.style.transform = `translate3d(0, ${layout.sheetBaseY + floatY}px, 0)`;
+  sheetRig.style.transform = `translate3d(0, ${baseY + floatY}px, 0)`;
   resumeSheet.style.transform = `translate3d(0, 0, 30px)`;
 }
 
 function animateSparks(timeMs) {
   const t = timeMs / 1000;
 
-  sparkLayer.style.transform = `translate3d(0, ${layout.sparkAnchorY}px, ${layout.sparkAnchorZ}px)`;
+  sparkLayer.style.transform = "translate3d(0, 412px, -140px)";
 
   sparks.forEach((spark) => {
     spark.height += spark.speed;
 
-    if (spark.height > layout.sparkMaxHeight) {
+    if (spark.height > 72) {
       spark.height = 0;
       spark.angle = Math.random() * Math.PI * 2;
-      spark.radius = layout.sparkMinRadius + Math.random() * layout.sparkRadiusRange;
+      spark.radius = 8 + Math.random() * 40;
     }
 
-    const orbit = spark.angle + t * spark.drift;
-    const x = Math.cos(orbit) * spark.radius;
-    const z = Math.sin(orbit) * (spark.radius * 0.52);
+    const x = Math.cos(spark.angle + t * spark.drift) * spark.radius;
+    const z = Math.sin(spark.angle + t * spark.drift) * (spark.radius * 0.32);
     const y = -spark.height;
-    const scale = spark.scale + Math.sin(t * 2.1 + spark.angle) * 0.05;
+    const scale = spark.scale + Math.sin(t * 2.1 + spark.angle) * 0.06;
 
     spark.el.style.transform = `translate3d(${x}px, ${y}px, ${z}px) scale(${scale})`;
   });
@@ -304,8 +403,12 @@ function onWheel(event) {
 
 function toggleHud() {
   state.hudHidden = !state.hudHidden;
-  hud.classList.toggle("hidden", state.hudHidden);
   dock.classList.toggle("hidden", state.hudHidden);
+
+  if (statsChip) {
+    statsChip.classList.toggle("hidden", state.hudHidden);
+  }
+
   uiToggleButton.textContent = state.hudHidden ? "Show UI" : "Hide UI";
   uiToggleButton.setAttribute("aria-pressed", String(state.hudHidden));
 }
@@ -313,29 +416,6 @@ function toggleHud() {
 function toggleDrift() {
   state.autoDrift = !state.autoDrift;
   orbitButton.textContent = state.autoDrift ? "Pause" : "Resume";
-}
-
-function initBackgroundAnalytics() {
-  if (analyticsConfig.provider !== "goatcounter") {
-    return;
-  }
-
-  const goatcounterCode = analyticsConfig.goatcounterCode.trim();
-
-  if (!goatcounterCode) {
-    return;
-  }
-
-  if (document.querySelector('script[data-goatcounter-runtime="true"]')) {
-    return;
-  }
-
-  const script = document.createElement("script");
-  script.dataset.goatcounter = `https://${goatcounterCode}.goatcounter.com/count`;
-  script.dataset.goatcounterRuntime = "true";
-  script.async = true;
-  script.src = "https://gc.zgo.at/count.js";
-  document.head.appendChild(script);
 }
 
 function bindEvents() {
@@ -364,8 +444,9 @@ function bindEvents() {
   });
 }
 
+createStatsChip();
+applyChromeTweaks();
 populateContent();
 buildSparks();
 bindEvents();
-initBackgroundAnalytics();
 requestAnimationFrame(loop);
