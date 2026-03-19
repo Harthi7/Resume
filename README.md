@@ -1,11 +1,11 @@
-# Projected Resume Sheet v9
+# Projected Resume Sheet v5
 
-This revision removes the on-screen visit counter and switches the site to background analytics.
+This revision fixes three UX issues from the previous version:
 
-## What changed
-- removed the visible visit counter from the hologram HUD
-- restored the cleaner scene layout
-- added optional GoatCounter background analytics through `app.js`
+- the HUD no longer stretches across the stage and cover the resume
+- the UI can always be restored with the persistent top-right toggle
+- the resume sheet is centered more cleanly in the viewport for zooming
+- the device sits lower so the emitter is visible under the hologram sheet
 
 ## Files
 - `index.html`
@@ -15,26 +15,11 @@ This revision removes the on-screen visit counter and switches the site to backg
 ## Publish
 Push the files to the root of your GitHub Pages repository and wait for Pages to redeploy.
 
-## Turn analytics on
-Open `app.js` and set:
-
-```js
-const analyticsConfig = {
-  provider: "goatcounter",
-  goatcounterCode: "YOUR_GOATCOUNTER_CODE"
-};
-```
-
-Example:
-
-```js
-const analyticsConfig = {
-  provider: "goatcounter",
-  goatcounterCode: "abdullah-resume"
-};
-```
-
-That loads GoatCounter in the background and keeps the 3D scene free of counters or overlays.
-
 ## Edit content
 Replace the `resumeData` object in `app.js` with your actual resume content.
+
+
+Version v6 fixes:
+- smaller bottom-right control dock
+- wrapped contact values so long LinkedIn/email text stays inside cards
+- emitter particles moved below and behind the hologram sheet

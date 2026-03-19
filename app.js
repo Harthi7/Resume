@@ -72,8 +72,6 @@ const sparkLayer = document.getElementById("sparkLayer");
 const hudName = document.getElementById("hudName");
 const hudTitle = document.getElementById("hudTitle");
 
-let statsChip;
-
 const state = {
   rotationX: -2,
   rotationY: 0,
@@ -90,113 +88,6 @@ const state = {
 };
 
 const sparks = [];
-
-
-function injectStatsChipStyles() {
-  const style = document.createElement("style");
-  style.textContent = `
-    .stats-chip {
-      position: fixed;
-      left: max(18px, env(safe-area-inset-left));
-      bottom: max(18px, env(safe-area-inset-bottom));
-      z-index: 14;
-      width: min(198px, calc(100vw - 110px));
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(135, 251, 255, 0.14);
-      background: linear-gradient(180deg, rgba(6, 14, 24, 0.72), rgba(3, 8, 16, 0.66));
-      box-shadow:
-        0 12px 28px rgba(0, 0, 0, 0.26),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.02);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .stats-chip.hidden {
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(10px);
-    }
-
-    .stats-chip__eyebrow {
-      margin: 0 0 6px;
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(135, 251, 255, 0.72);
-    }
-
-    .stats-chip__grid {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 5px 10px;
-      align-items: baseline;
-    }
-
-    .stats-chip__label {
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(163, 186, 211, 0.72);
-    }
-
-    .stats-chip__value {
-      min-width: 0;
-      font-size: 11px;
-      line-height: 1.3;
-      color: rgba(238, 248, 255, 0.92);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    @media (max-width: 900px) {
-      .stats-chip {
-        width: min(184px, calc(100vw - 96px));
-        padding: 9px 10px;
-      }
-
-      .stats-chip__value {
-        font-size: 10px;
-      }
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-function createStatsChip() {
-  injectStatsChipStyles();
-
-  statsChip = document.createElement("aside");
-  statsChip.className = "stats-chip";
-  statsChip.setAttribute("aria-hidden", "true");
-  statsChip.innerHTML = `
-    <p class="stats-chip__eyebrow">Scene Stats</p>
-    <div class="stats-chip__grid">
-      <span class="stats-chip__label">Name</span>
-      <span class="stats-chip__value" data-stat="name"></span>
-      <span class="stats-chip__label">Role</span>
-      <span class="stats-chip__value" data-stat="role"></span>
-      <span class="stats-chip__label">View</span>
-      <span class="stats-chip__value">Drag / Wheel</span>
-    </div>
-  `;
-
-  document.body.appendChild(statsChip);
-}
-
-function applyChromeTweaks() {
-  hud.style.display = "none";
-
-  dock.style.left = "auto";
-  dock.style.right = "22px";
-  dock.style.bottom = "22px";
-  dock.style.transform = "none";
-  dock.style.maxWidth = "unset";
-}
-
 
 function renderSectionBlock(section) {
   return `
@@ -266,11 +157,6 @@ function renderResumeFace() {
 function populateContent() {
   hudName.textContent = resumeData.name;
   hudTitle.textContent = resumeData.title;
-
-  if (statsChip) {
-    statsChip.querySelector('[data-stat="name"]').textContent = resumeData.name;
-    statsChip.querySelector('[data-stat="role"]').textContent = resumeData.title;
-  }
 
   const faceMarkup = renderResumeFace();
   sheetFront.innerHTML = faceMarkup;
@@ -403,12 +289,8 @@ function onWheel(event) {
 
 function toggleHud() {
   state.hudHidden = !state.hudHidden;
+  hud.classList.toggle("hidden", state.hudHidden);
   dock.classList.toggle("hidden", state.hudHidden);
-
-  if (statsChip) {
-    statsChip.classList.toggle("hidden", state.hudHidden);
-  }
-
   uiToggleButton.textContent = state.hudHidden ? "Show UI" : "Hide UI";
   uiToggleButton.setAttribute("aria-pressed", String(state.hudHidden));
 }
@@ -444,8 +326,6 @@ function bindEvents() {
   });
 }
 
-createStatsChip();
-applyChromeTweaks();
 populateContent();
 buildSparks();
 bindEvents();
