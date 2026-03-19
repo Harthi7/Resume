@@ -1,25 +1,22 @@
-# Projected Resume Sheet v5
+# Projected Resume Sheet v7.1
 
-This revision fixes three UX issues from the previous version:
+This build restores the cleaner V7 emitter positioning and fixes the headline HUD so it stops getting in the way.
 
-- the HUD no longer stretches across the stage and cover the resume
-- the UI can always be restored with the persistent top-right toggle
-- the resume sheet is centered more cleanly in the viewport for zooming
-- the device sits lower so the emitter is visible under the hologram sheet
+## What changed
+- kept the raised hologram sheet and corrected emitter particle placement from V7
+- restored the full 4-file package
+- reduced the top-left headline block size
+- made the top-left headline automatically collapse into a tiny chip when you zoom in, so it does not cover the resume
+- left the bottom-right controls intact
 
 ## Files
 - `index.html`
 - `styles.css`
 - `app.js`
+- `README.md`
 
 ## Publish
-Push the files to the root of your GitHub Pages repository and wait for Pages to redeploy.
+Replace the files in your GitHub Pages repo root, commit to `main`, and wait for Pages to redeploy.
 
 ## Edit content
-Replace the `resumeData` object in `app.js` with your actual resume content.
-
-
-Version v6 fixes:
-- smaller bottom-right control dock
-- wrapped contact values so long LinkedIn/email text stays inside cards
-- emitter particles moved below and behind the hologram sheet
+Update the `resumeData` object in `app.js` with your actual resume information.

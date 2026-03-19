@@ -99,6 +99,8 @@ const layout = {
   sparkRadiusRange: 20
 };
 
+const hudCompactThreshold = 1.02;
+
 function renderSectionBlock(section) {
   return `
     <section class="section-block">
@@ -245,6 +247,11 @@ function animateSparks(timeMs) {
   });
 }
 
+function syncHudMode() {
+  const shouldCompact = !state.hudHidden && (state.scale > hudCompactThreshold || window.innerWidth < 900);
+  hud.classList.toggle("compact", shouldCompact);
+}
+
 function loop(timeMs) {
   if (state.autoDrift && !state.dragging) {
     state.targetRotationY += 0.008;
@@ -252,6 +259,7 @@ function loop(timeMs) {
   }
 
   applyWorldTransform();
+  syncHudMode();
   animateSheet(timeMs);
   animateSparks(timeMs);
   requestAnimationFrame(loop);
@@ -301,6 +309,7 @@ function toggleHud() {
   state.hudHidden = !state.hudHidden;
   hud.classList.toggle("hidden", state.hudHidden);
   dock.classList.toggle("hidden", state.hudHidden);
+  syncHudMode();
   uiToggleButton.textContent = state.hudHidden ? "Show UI" : "Hide UI";
   uiToggleButton.setAttribute("aria-pressed", String(state.hudHidden));
 }
@@ -334,9 +343,12 @@ function bindEvents() {
       toggleDrift();
     }
   });
+
+  window.addEventListener("resize", syncHudMode);
 }
 
 populateContent();
 buildSparks();
 bindEvents();
+syncHudMode();
 requestAnimationFrame(loop);

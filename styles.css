@@ -530,22 +530,43 @@ button {
 .hud {
   position: absolute;
   z-index: 8;
-  background: rgba(5, 12, 22, 0.34);
+  background: rgba(5, 12, 22, 0.28);
   border: 1px solid rgba(135, 251, 255, 0.1);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  box-shadow: var(--shadow);
-  transition: opacity 180ms ease, transform 180ms ease;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.3);
+  transition: opacity 180ms ease, transform 180ms ease, width 180ms ease, padding 180ms ease, border-radius 180ms ease;
 }
 
 .hud-top {
-  left: 24px;
-  top: 24px;
-  width: min(360px, calc(100vw - 120px));
+  left: 16px;
+  top: 16px;
+  width: min(248px, calc(100vw - 112px));
   display: flex;
-  gap: 16px;
-  padding: 16px 18px;
-  border-radius: 22px;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  pointer-events: none;
+}
+
+.hud-top.compact {
+  width: auto;
+  max-width: calc(100vw - 96px);
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(5, 12, 22, 0.4);
+  transform: translateY(-2px);
+}
+
+.hud-top.compact h1,
+.hud-top.compact p {
+  display: none;
+}
+
+.hud-top.compact .hud-kicker {
+  margin: 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
 }
 
 .hud-dock {
@@ -577,21 +598,22 @@ button {
   color: var(--cyan);
   text-transform: uppercase;
   letter-spacing: 0.16em;
-  font-size: 0.72rem;
-  margin-bottom: 8px;
+  font-size: 0.68rem;
+  margin-bottom: 6px;
 }
 
 .hud-top h1 {
   margin: 0;
-  font-size: clamp(1.5rem, 3vw, 2.35rem);
+  font-size: clamp(1.1rem, 1.9vw, 1.52rem);
+  line-height: 1.02;
   letter-spacing: -0.05em;
 }
 
 .hud-top p {
-  margin: 8px 0 0;
+  margin: 6px 0 0;
   color: var(--muted);
-  font-size: clamp(0.92rem, 1.6vw, 1rem);
-  line-height: 1.4;
+  font-size: clamp(0.78rem, 1.2vw, 0.9rem);
+  line-height: 1.35;
 }
 
 .ui-toggle,
@@ -607,8 +629,8 @@ button {
 .ui-toggle {
   position: absolute;
   z-index: 9;
-  top: 24px;
-  right: 24px;
+  top: 16px;
+  right: 16px;
   background: rgba(9, 17, 30, 0.68);
   border: 1px solid rgba(135, 251, 255, 0.16);
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
@@ -707,15 +729,15 @@ button {
 
 @media (max-width: 900px) {
   .hud-top {
-    left: 14px;
-    top: 14px;
-    width: min(320px, calc(100vw - 110px));
-    padding: 14px 16px;
+    left: 12px;
+    top: 12px;
+    width: min(220px, calc(100vw - 94px));
+    padding: 10px 12px;
   }
 
   .ui-toggle {
-    top: 14px;
-    right: 14px;
+    top: 12px;
+    right: 12px;
   }
 
   .hud-dock {
@@ -751,7 +773,19 @@ button {
 
 @media (max-width: 700px) {
   .hud-top {
-    width: min(280px, calc(100vw - 110px));
+    width: auto;
+    max-width: calc(100vw - 88px);
+    padding: 8px 10px;
+  }
+
+  .hud-top h1,
+  .hud-top p {
+    display: none;
+  }
+
+  .hud-top .hud-kicker {
+    margin: 0;
+    font-size: 0.62rem;
   }
 
   .resume-sheet {
