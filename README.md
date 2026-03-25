@@ -13,3 +13,4 @@ The displayed name, title, summary, experience, skills, education, certification
 
 ## Publish
 Replace the files in your GitHub Pages repo root, commit to `main`, and wait for Pages to redeploy.
+---
