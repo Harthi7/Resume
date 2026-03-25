@@ -431,6 +431,18 @@ button {
   align-items: start;
 }
 
+.section-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.section-column .section-block {
+  height: auto;
+}
+
+
 .section-block {
   padding: 12px 12px 11px;
   border-radius: 16px;
@@ -441,6 +453,15 @@ button {
 
 .section-experience {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+}
+
+.section-experience .section-lead {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-size: 0.84rem;
+  line-height: 1.45;
+  font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
 .section-experience .resume-list {

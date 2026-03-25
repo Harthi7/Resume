@@ -113,10 +113,12 @@ const hudCompactThreshold = 1.02;
 
 function renderSectionBlock(section, className = "") {
   const blockClass = ["section-block", className].filter(Boolean).join(" ");
+  const lead = section.lead ? `<p class="section-lead">${section.lead}</p>` : "";
 
   return `
     <section class="${blockClass}">
       <h3 class="section-title">${section.title}</h3>
+      ${lead}
       <ul class="resume-list">
         ${section.items.map((item) => `<li>${item}</li>`).join("")}
       </ul>
@@ -143,7 +145,13 @@ function renderResumeFace() {
   const technicalSkillsSection = resumeData.rightSections.find((section) => section.title === "Technical Skills");
   const certificationsSection = resumeData.rightSections.find((section) => section.title === "Certifications");
 
-  const supportingSections = [educationSection, technicalSkillsSection, certificationsSection].filter(Boolean);
+  const normalizedExperienceSection = experienceSection
+    ? {
+        ...experienceSection,
+        lead: experienceSection.items[0],
+        items: experienceSection.items.slice(1)
+      }
+    : null;
 
   return `
     <div class="sheet-scroll">
@@ -167,10 +175,16 @@ function renderResumeFace() {
             .join("")}
         </div>
 
-        ${experienceSection ? renderSectionBlock(experienceSection, "section-experience") : ""}
+        ${normalizedExperienceSection ? renderSectionBlock(normalizedExperienceSection, "section-experience") : ""}
 
         <div class="section-grid section-grid-supporting">
-          ${supportingSections.map((section) => renderSectionBlock(section, "section-supporting")).join("")}
+          <div class="section-column section-column-stack">
+            ${educationSection ? renderSectionBlock(educationSection, "section-supporting") : ""}
+            ${certificationsSection ? renderSectionBlock(certificationsSection, "section-supporting") : ""}
+          </div>
+          <div class="section-column">
+            ${technicalSkillsSection ? renderSectionBlock(technicalSkillsSection, "section-supporting") : ""}
+          </div>
         </div>
 
         <section class="section-block section-contact">
