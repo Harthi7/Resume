@@ -275,12 +275,12 @@ button {
 }
 
 .sheet-aura {
-  width: 660px;
-  height: 860px;
+  width: 700px;
+  height: 920px;
   left: 50%;
   top: 50%;
-  margin-left: -330px;
-  margin-top: -430px;
+  margin-left: -350px;
+  margin-top: -460px;
   border-radius: 44px;
   transform: translate3d(0, 0, 6px);
   background: radial-gradient(circle, rgba(135, 251, 255, 0.12), rgba(135, 251, 255, 0.03) 60%, transparent 80%);
@@ -288,18 +288,18 @@ button {
 }
 
 .resume-sheet {
-  width: 560px;
-  height: 760px;
+  width: 600px;
+  height: 820px;
   left: 50%;
   top: 50%;
-  margin-left: -280px;
-  margin-top: -380px;
+  margin-left: -300px;
+  margin-top: -410px;
   transform: translate3d(0, 0, 30px);
 }
 
 .sheet-face {
   inset: 0;
-  padding: 24px 24px 20px;
+  padding: 22px 22px 18px;
   border-radius: 28px;
   overflow: hidden;
   background:
@@ -362,18 +362,18 @@ button {
 .sheet-content {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   min-height: 100%;
 }
 
 .resume-head {
-  padding-bottom: 14px;
+  padding-bottom: 12px;
   border-bottom: 1px solid rgba(135, 251, 255, 0.12);
 }
 
 .resume-name {
   margin: 0;
-  font-size: 2.15rem;
+  font-size: 2rem;
   line-height: 0.96;
   letter-spacing: -0.05em;
 }
@@ -387,20 +387,20 @@ button {
 }
 
 .resume-summary {
-  margin: 12px 0 0;
+  margin: 10px 0 0;
   color: var(--muted);
-  line-height: 1.52;
-  font-size: 0.94rem;
+  line-height: 1.48;
+  font-size: 0.9rem;
 }
 
 .mini-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 8px;
 }
 
 .mini-chip {
-  padding: 10px 12px;
+  padding: 9px 11px;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(135, 251, 255, 0.08);
@@ -423,14 +423,42 @@ button {
 .section-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: 10px;
+}
+
+
+.section-grid-supporting {
+  align-items: start;
 }
 
 .section-block {
-  padding: 14px 14px 12px;
+  padding: 12px 12px 11px;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.025);
   border: 1px solid rgba(135, 251, 255, 0.08);
+}
+
+
+.section-experience {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.02));
+}
+
+.section-experience .resume-list {
+  gap: 6px;
+}
+
+.section-experience .resume-list li {
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.section-supporting .resume-list li {
+  font-size: 0.79rem;
+  line-height: 1.38;
+}
+
+.section-contact {
+  padding-top: 11px;
 }
 
 .section-title {
@@ -447,15 +475,15 @@ button {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 6px;
 }
 
 .resume-list li {
   position: relative;
   padding-left: 14px;
   color: var(--text);
-  line-height: 1.42;
-  font-size: 0.82rem;
+  line-height: 1.4;
+  font-size: 0.8rem;
 }
 
 .resume-list li::before {
@@ -472,16 +500,16 @@ button {
 
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 8px;
 }
 
 .contact-line {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
   min-width: 0;
-  padding: 10px 12px;
+  padding: 9px 11px;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.025);
   border: 1px solid rgba(135, 251, 255, 0.08);
@@ -520,11 +548,12 @@ button {
 .resume-footer {
   display: flex;
   justify-content: space-between;
-  gap: 16px;
-  padding-top: 10px;
+  gap: 12px;
+  padding-top: 8px;
   border-top: 1px solid rgba(135, 251, 255, 0.08);
   color: var(--muted);
   font-size: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .spark-layer {
@@ -716,17 +745,17 @@ button {
   }
 
   .resume-sheet {
-    width: 520px;
-    height: 720px;
-    margin-left: -260px;
-    margin-top: -360px;
+    width: 560px;
+    height: 760px;
+    margin-left: -280px;
+    margin-top: -380px;
   }
 
   .sheet-aura {
-    width: 620px;
-    height: 820px;
-    margin-left: -310px;
-    margin-top: -410px;
+    width: 650px;
+    height: 860px;
+    margin-left: -325px;
+    margin-top: -430px;
   }
 
   .beam-inner {
@@ -764,17 +793,17 @@ button {
   }
 
   .resume-sheet {
-    width: 480px;
-    height: 680px;
-    margin-left: -240px;
-    margin-top: -340px;
+    width: 510px;
+    height: 720px;
+    margin-left: -255px;
+    margin-top: -360px;
   }
 
   .sheet-aura {
-    width: 560px;
-    height: 760px;
-    margin-left: -280px;
-    margin-top: -380px;
+    width: 590px;
+    height: 800px;
+    margin-left: -295px;
+    margin-top: -400px;
   }
 
   .section-grid,
@@ -803,16 +832,16 @@ button {
 
   .resume-sheet {
     width: 88vw;
-    height: 62vh;
+    height: 68vh;
     margin-left: -44vw;
-    margin-top: -31vh;
+    margin-top: -34vh;
   }
 
   .sheet-aura {
     width: 96vw;
-    height: 70vh;
+    height: 76vh;
     margin-left: -48vw;
-    margin-top: -35vh;
+    margin-top: -38vh;
   }
 
   .sheet-face {

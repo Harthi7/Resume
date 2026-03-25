@@ -111,9 +111,11 @@ const layout = {
 
 const hudCompactThreshold = 1.02;
 
-function renderSectionBlock(section) {
+function renderSectionBlock(section, className = "") {
+  const blockClass = ["section-block", className].filter(Boolean).join(" ");
+
   return `
-    <section class="section-block">
+    <section class="${blockClass}">
       <h3 class="section-title">${section.title}</h3>
       <ul class="resume-list">
         ${section.items.map((item) => `<li>${item}</li>`).join("")}
@@ -136,7 +138,12 @@ function renderContactLine(item) {
 }
 
 function renderResumeFace() {
-  const allSections = [...resumeData.leftSections, ...resumeData.rightSections];
+  const experienceSection = resumeData.leftSections.find((section) => section.title === "Experience");
+  const educationSection = resumeData.leftSections.find((section) => section.title === "Education");
+  const technicalSkillsSection = resumeData.rightSections.find((section) => section.title === "Technical Skills");
+  const certificationsSection = resumeData.rightSections.find((section) => section.title === "Certifications");
+
+  const supportingSections = [educationSection, technicalSkillsSection, certificationsSection].filter(Boolean);
 
   return `
     <div class="sheet-scroll">
@@ -160,11 +167,13 @@ function renderResumeFace() {
             .join("")}
         </div>
 
-        <div class="section-grid">
-          ${allSections.map(renderSectionBlock).join("")}
+        ${experienceSection ? renderSectionBlock(experienceSection, "section-experience") : ""}
+
+        <div class="section-grid section-grid-supporting">
+          ${supportingSections.map((section) => renderSectionBlock(section, "section-supporting")).join("")}
         </div>
 
-        <section class="section-block">
+        <section class="section-block section-contact">
           <h3 class="section-title">Contact</h3>
           <div class="contact-grid">
             ${resumeData.contacts.map(renderContactLine).join("")}
