@@ -1,60 +1,70 @@
 const resumeData = {
   name: "Abdullah Alharthi",
-  title: "Backend & Platform Engineer",
+  title: "Software Engineer",
   tagline:
-    "Systems-minded builder focused on platform reliability, automation, debugging, and technically real work.",
+    "Software engineer at IBM working on watsonx.data, a distributed data and AI platform running on Kubernetes. Experience building backend services in Java and Spring, designing REST APIs, supporting production workloads, and improving CI/CD pipelines for containerized services.",
   meta: [
-    { label: "Focus", value: "Backend · Platform · Automation" },
-    { label: "Current lane", value: "Reliability, data platforms, implementation" },
-    { label: "Style", value: "Product-aware, systems-first, execution-heavy" },
-    { label: "Based in", value: "Saudi Arabia" }
+    { label: "Location", value: "Riyadh, Saudi Arabia" },
+    { label: "Company", value: "IBM" },
+    { label: "Platform", value: "watsonx.data" },
+    { label: "Focus", value: "Backend services · CI/CD" }
   ],
   leftSections: [
     {
-      title: "Profile",
+      title: "Experience",
       items: [
-        "Backend and platform-oriented engineer with strong interest in reliability, debugging, system structure, and delivery under constraints.",
-        "Best in roles where technical judgment, implementation discipline, and cross-functional communication all matter at the same time."
+        "IBM | Software Engineer | Riyadh, Saudi Arabia | June 2024 - Present",
+        "Build and maintain backend services for IBM watsonx.data, a distributed data and AI platform running on Kubernetes, with focus on secure and reliable service-to-service communication.",
+        "Design and implement REST APIs in Java using Spring and JAX-RS, including input validation, standardized error handling, pagination, and authorization aligned with internal security policies.",
+        "Refactored and maintained JavaScript backend services for the watsonx.data VS Code Plugin, managing the lifecycle of Spark compute sessions including creation, reuse, cleanup, and isolation.",
+        "Migrated a production microservice from Go to Java Spring and updated Nginx routing to preserve external API behavior and minimize disruption to client integrations.",
+        "Containerized backend services with Docker and prepared them for production deployment with health endpoints, environment-based configuration, and centralized logging compatibility.",
+        "Deployed and operated services on Kubernetes using manifests, Deployments, Services, ConfigMaps, and Secrets; supported rollout, rollback, and performance-tuning activities.",
+        "Improved CI/CD pipelines in GitHub Actions and Jenkins by removing redundant steps and enforcing automated testing and SonarQube checks to shorten feedback cycles for developers."
       ]
     },
     {
-      title: "Technical Strengths",
+      title: "Education",
       items: [
-        "APIs, platform workflows, automation, debugging, CI/CD, data platform operations",
-        "JavaScript, TypeScript, Python, browser UI, implementation quality, practical system design"
+        "Bachelor's in Computer Engineering | California State University, San Bernardino",
+        "Relevant Coursework: Data Structures and Algorithms, Operating Systems, Databases, Computer Networks, Machine Learning"
       ]
     }
   ],
   rightSections: [
     {
-      title: "Current Work",
+      title: "Technical Skills",
       items: [
-        "IBM Watsonx.data related engineering work across ingestion APIs, platform behavior, and test or automation flows where reliability matters.",
-        "Hands-on with issue triage, cluster behavior, root cause analysis, and implementation work that is closer to the system than to presentation."
+        "Languages: Java, Python, SQL, Bash, JavaScript",
+        "Backend: Spring, Spring Boot, JAX-RS, REST APIs, JSON, HTTP, Microservices",
+        "Platform & Infrastructure: Docker, Kubernetes, Linux, Nginx",
+        "CI/CD & Tooling: Git, GitHub, GitHub Actions, Jenkins, SonarQube",
+        "Databases: PostgreSQL, MySQL, Schema Migrations, Basic Query Optimization",
+        "Engineering Practices: Unit Testing, Integration Testing, Logging, Metrics, Observability, Code Reviews, Agile/Scrum"
       ]
     },
     {
-      title: "Strategic Interests",
+      title: "Certifications",
       items: [
-        "Quantum computing and optimization workflows with emphasis on practical benchmarking against classical systems.",
-        "Product, infrastructure, and business-side thinking where technical work needs to connect to real outcomes, not just internal activity."
-      ]
-    },
-    {
-      title: "Selected Direction",
-      items: [
-        "Build toward platform, backend, systems, and advanced technical roles where depth compounds instead of getting diluted into generic coordination.",
-        "Use engineering credibility as the base layer for larger product, research, and venture opportunities over time."
+        "AWS Fundamentals - Coursera",
+        "Machine Learning Specialization - Coursera"
       ]
     }
   ],
   contacts: [
-    { label: "GitHub", value: "github.com/Harthi7" },
-    { label: "LinkedIn", value: "linkedin.com/in/abdullah-alharthi" },
-    { label: "Email", value: "your.email@example.com" }
+    {
+      label: "Email",
+      value: "Abdullah-harthi7@live.com",
+      href: "mailto:Abdullah-harthi7@live.com"
+    },
+    {
+      label: "LinkedIn",
+      value: "linkedin.com/in/abdullah-alharthi-20244b1a6",
+      href: "https://linkedin.com/in/abdullah-alharthi-20244b1a6"
+    }
   ],
-  footerLeft: "Projected single-sheet resume · minimal hologram layout",
-  footerRight: "Edit resumeData in app.js to replace placeholders and tighten claims"
+  footerLeft: "IBM watsonx.data · Software Engineer",
+  footerRight: "Java · Spring · Kubernetes · CI/CD"
 };
 
 const hud = document.getElementById("hud");
@@ -112,6 +122,19 @@ function renderSectionBlock(section) {
   `;
 }
 
+function renderContactLine(item) {
+  const valueMarkup = item.href
+    ? `<a href="${item.href}" target="_blank" rel="noreferrer">${item.value}</a>`
+    : `<span>${item.value}</span>`;
+
+  return `
+    <div class="contact-line">
+      <strong>${item.label}</strong>
+      ${valueMarkup}
+    </div>
+  `;
+}
+
 function renderResumeFace() {
   const allSections = [...resumeData.leftSections, ...resumeData.rightSections];
 
@@ -144,16 +167,7 @@ function renderResumeFace() {
         <section class="section-block">
           <h3 class="section-title">Contact</h3>
           <div class="contact-grid">
-            ${resumeData.contacts
-              .map(
-                (item) => `
-                  <div class="contact-line">
-                    <strong>${item.label}</strong>
-                    <span>${item.value}</span>
-                  </div>
-                `
-              )
-              .join("")}
+            ${resumeData.contacts.map(renderContactLine).join("")}
           </div>
         </section>
 
@@ -220,7 +234,7 @@ function animateSheet(timeMs) {
   const floatY = Math.sin(t * 0.9) * layout.sheetFloatAmplitude;
 
   sheetRig.style.transform = `translate3d(0, ${layout.sheetBaseY + floatY}px, 0)`;
-  resumeSheet.style.transform = `translate3d(0, 0, 30px)`;
+  resumeSheet.style.transform = "translate3d(0, 0, 30px)";
 }
 
 function animateSparks(timeMs) {

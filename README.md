@@ -1,13 +1,6 @@
-# Projected Resume Sheet v7.1
+# Projected Resume Sheet
 
-This build restores the cleaner V7 emitter positioning and fixes the headline HUD so it stops getting in the way.
-
-## What changed
-- kept the raised hologram sheet and corrected emitter particle placement from V7
-- restored the full 4-file package
-- reduced the top-left headline block size
-- made the top-left headline automatically collapse into a tiny chip when you zoom in, so it does not cover the resume
-- left the bottom-right controls intact
+This build keeps the existing holographic single-sheet experience and replaces the sample resume copy with Abdullah Alharthi's real resume content.
 
 ## Files
 - `index.html`
@@ -15,8 +8,8 @@ This build restores the cleaner V7 emitter positioning and fixes the headline HU
 - `app.js`
 - `README.md`
 
+## Content integration
+The displayed name, title, summary, experience, skills, education, certifications, and contact links now come from the `resumeData` object in `app.js`.
+
 ## Publish
 Replace the files in your GitHub Pages repo root, commit to `main`, and wait for Pages to redeploy.
-
-## Edit content
-Update the `resumeData` object in `app.js` with your actual resume information.
